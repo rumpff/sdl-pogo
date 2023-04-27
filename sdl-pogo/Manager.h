@@ -3,6 +3,13 @@
 class Manager
 {
 public:
+	/// <summary>
+	/// Call when finishing initalization
+	/// </summary>
 	virtual void Initalize();
 	virtual void Close();
+	virtual bool IsInitialzed();
+
+private:
+	bool m_IsInitalized = false;
 };

@@ -5,5 +5,8 @@
 // move objects that are not static and check for collisions
 class ObjectManager : Manager
 {
+public:
+	virtual void Initalize();
+	virtual void Close();
 };
 

@@ -140,6 +140,7 @@
     <ClCompile Include="GameplayManager.cpp" />
     <ClCompile Include="LevelManager.cpp" />
     <ClCompile Include="Main.cpp" />
+    <ClCompile Include="Manager.cpp" />
     <ClCompile Include="ObjectManager.cpp" />
     <ClCompile Include="ResourceLoader.cpp" />
   </ItemGroup>
