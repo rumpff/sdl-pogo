@@ -8,12 +8,15 @@
 #include <SDL_ttf.h>
 #include <SDL_mixer.h>
 
-#include "LevelManager.h"
+#include "GameLevelManager.h"
 #include "AudioManager.h"
 #include "ResourceLoader.h"
 
-// handle window, control all managers, keep track of current level
-class GameManager : public Manager
+/// <summary>
+/// handle window, control all managers, keep track of current level
+/// </summary>
+class GameManager : 
+	public Manager
 {
 public:
 	const int SCREEN_WIDTH = 1280;
@@ -22,14 +25,14 @@ public:
 	virtual void Initalize();
 	virtual void Close();
 	void ChangeLevel(LevelManager* newLevel);
-	void GameLoop();
+	void Game();
 
 private:
-	SDL_Window* m_Window;
-	SDL_Surface* m_ScreenSurface;
-	SDL_Renderer* m_Renderer;
+	SDL_Window* m_Window = 0;
+	SDL_Surface* m_ScreenSurface = 0;
+	SDL_Renderer* m_Renderer = 0;
 
-	LevelManager* m_CurrentLevel;
-	AudioManager* m_AudioManager;
-	ResourceLoader* m_ResourceLoader;
+	LevelManager* m_CurrentLevel = 0;
+	AudioManager* m_AudioManager = 0;
+	ResourceLoader* m_ResourceLoader = 0;
 };

@@ -1,9 +1,12 @@
 #pragma once
 #include "Manager.h"
 
-// create and update objects, keep track of all objects, 
-// move objects that are not static and check for collisions
-class ObjectManager : Manager
+/// <summary>
+/// create and update objects, keep track of all objects, 
+/// move objects that are not static and check for collisions
+/// </summary>
+class ObjectManager : 
+	public Manager
 {
 public:
 	virtual void Initalize();

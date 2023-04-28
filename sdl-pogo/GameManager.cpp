@@ -59,6 +59,9 @@ void GameManager::Initalize()
 
 	m_AudioManager->Initalize();
 
+	// Load first level
+	ChangeLevel(new GameLevelManager());
+
 	Manager::Initalize();
 }
 
@@ -70,7 +73,10 @@ void GameManager::Close()
 	m_Renderer = NULL;
 	m_Window = NULL;
 
-	// Close 
+	// Close managers
+	m_CurrentLevel->Close(); delete m_CurrentLevel;
+	m_AudioManager->Close(); delete m_AudioManager;
+	m_ResourceLoader->UnloadEverything(); delete m_ResourceLoader;
 
 	//Quit SDL subsystems
 	TTF_Quit();
@@ -88,10 +94,10 @@ void GameManager::ChangeLevel(LevelManager* newLevel)
 	}
 
 	m_CurrentLevel = newLevel;
-	m_CurrentLevel->Initalize(1);
+	m_CurrentLevel->Initalize();
 }
 
-void GameManager::GameLoop()
+void GameManager::Game()
 {
 	//Start up SDL and create window
 	if (!IsInitialzed())

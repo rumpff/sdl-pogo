@@ -1,8 +1,11 @@
 #pragma once
 #include "Manager.h"
 
-// Handle gamelevel state, keep track of stats, look after player
-class GameplayManager : Manager
+/// <summary>
+/// Handle gamelevel state, keep track of stats, look after player
+/// </summary>
+class GameplayManager : 
+	public Manager
 {
 public:
 	virtual void Initalize();

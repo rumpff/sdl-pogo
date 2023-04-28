@@ -2,11 +2,11 @@
 
 int main(int argc, char* args[])
 {
-	GameManager game;
+	GameManager gameManager;
 
-	game.Initalize();
-	game.GameLoop();
-	game.Close();
+	gameManager.Initalize();
+	gameManager.Game();
+	gameManager.Close();
 
 	return 0;
 }

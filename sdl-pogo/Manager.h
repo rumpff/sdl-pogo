@@ -10,6 +10,6 @@ public:
 	virtual void Close();
 	virtual bool IsInitialzed();
 
-private:
+protected:
 	bool m_IsInitalized = false;
 };

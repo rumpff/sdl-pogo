@@ -1,12 +1,19 @@
 #pragma once
 #include "Manager.h"
 
-// handle level loading, unloading, restarting
-class LevelManager : Manager
+#include "ObjectManager.h"
+
+/// <summary>
+/// handle level loading, unloading, restarting
+/// </summary>
+class LevelManager : 
+	public Manager
 {
 public:
 	virtual void Initalize();
-	virtual void Initalize(int x); // override with 
 	virtual void Close();
+
+protected:
+	ObjectManager* m_ObjectManager;
 };
 
