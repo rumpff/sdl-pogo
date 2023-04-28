@@ -25,18 +25,11 @@ void GameManager::Initalize()
 			printf("oopsiewoopsie something went wrong initializing SDL_ttf SDL_ttf Error: %s\n", TTF_GetError());
 		}
 
-		// Initialze SDL Mixer
-		if (Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, 2, 2048) < 0)
-		{
-			printf("mixer init errror SDL_mixer Error : %s\n", Mix_GetError());
-		}
+		m_AudioManager = new AudioManager();
+		m_AudioManager->Initalize();
 	}
 
-	// Initialzie Managers
 	m_ResourceLoader = new ResourceLoader();
-	m_AudioManager = new AudioManager();
-
-	m_AudioManager->Initalize();
 
 	// Load first level
 	ChangeLevel(new GameLevelManager());
