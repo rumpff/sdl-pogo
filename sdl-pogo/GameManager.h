@@ -8,6 +8,7 @@
 #include <SDL_ttf.h>
 #include <SDL_mixer.h>
 
+#include "Camera.h"
 #include "GameLevelManager.h"
 #include "AudioManager.h"
 #include "ResourceLoader.h"
@@ -28,10 +29,7 @@ public:
 	void Game();
 
 private:
-	SDL_Window* m_Window = 0;
-	SDL_Surface* m_ScreenSurface = 0;
-	SDL_Renderer* m_Renderer = 0;
-
+	Camera* m_Camera = 0;
 	LevelManager* m_CurrentLevel = 0;
 	AudioManager* m_AudioManager = 0;
 	ResourceLoader* m_ResourceLoader = 0;

@@ -9,47 +9,26 @@ void GameManager::Initalize()
 	}
 	else
 	{
-		//Create window
-		m_Window = SDL_CreateWindow("SDL Tutorial", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, SCREEN_WIDTH, SCREEN_HEIGHT, SDL_WINDOW_SHOWN);
-		if (m_Window == NULL)
+		m_Camera = new Camera();
+		m_Camera->Initialize();
+
+		//Initialize PNG loading
+		int imgFlags = IMG_INIT_PNG;
+		if (!(IMG_Init(imgFlags) & imgFlags))
 		{
-			printf("Window could not be created! SDL Error: %s\n", SDL_GetError());
+			printf("SDL_image could not initialize! SDL_image Error: %s\n", IMG_GetError());
 		}
-		else
+
+		// Initialze SDL_ttf
+		if (TTF_Init() == -1)
 		{
-			// Create renderer
-			m_Renderer = SDL_CreateRenderer(m_Window, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
-			if (m_Renderer == NULL)
-			{
-				printf("something went wrong while creating the renderer lmao");
-			}
-			else
-			{
-				// init render color
-				SDL_SetRenderDrawColor(m_Renderer, 0xFF, 0xFF, 0xFF, 0xFF);
+			printf("oopsiewoopsie something went wrong initializing SDL_ttf SDL_ttf Error: %s\n", TTF_GetError());
+		}
 
-				//Initialize PNG loading
-				int imgFlags = IMG_INIT_PNG;
-				if (!(IMG_Init(imgFlags) & imgFlags))
-				{
-					printf("SDL_image could not initialize! SDL_image Error: %s\n", IMG_GetError());
-				}
-
-				// Initialze SDL_ttf
-				if (TTF_Init() == -1)
-				{
-					printf("oopsiewoopsie something went wrong initializing SDL_ttf SDL_ttf Error: %s\n", TTF_GetError());
-				}
-
-				// Initialze SDL Mixer
-				if (Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, 2, 2048) < 0)
-				{
-					printf("mixer init errror SDL_mixer Error : %s\n", Mix_GetError());
-				}
-
-				//Get window surface
-				m_ScreenSurface = SDL_GetWindowSurface(m_Window);
-			}
+		// Initialze SDL Mixer
+		if (Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, 2, 2048) < 0)
+		{
+			printf("mixer init errror SDL_mixer Error : %s\n", Mix_GetError());
 		}
 	}
 
@@ -67,16 +46,11 @@ void GameManager::Initalize()
 
 void GameManager::Close()
 {
-	//Destroy window
-	SDL_DestroyRenderer(m_Renderer);
-	SDL_DestroyWindow(m_Window);
-	m_Renderer = NULL;
-	m_Window = NULL;
-
 	// Close managers
 	m_CurrentLevel->Close(); delete m_CurrentLevel;
 	m_AudioManager->Close(); delete m_AudioManager;
 	m_ResourceLoader->UnloadEverything(); delete m_ResourceLoader;
+	m_Camera->Close(); delete m_Camera;
 
 	//Quit SDL subsystems
 	TTF_Quit();
