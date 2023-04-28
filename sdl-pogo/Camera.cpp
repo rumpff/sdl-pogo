@@ -31,3 +31,14 @@ void Camera::Close()
 	m_Renderer = NULL;
 	m_Window = NULL;
 }
+
+void Camera::Render()
+{
+	// Clear screen
+	SDL_SetRenderDrawColor(m_Renderer, 0xFF, 0xFF, 0xFF, 0xFF);
+	SDL_RenderClear(m_Renderer);
+
+	// Render stuff
+
+	SDL_RenderPresent(m_Renderer);
+}

@@ -90,13 +90,6 @@ void GameManager::Game()
 			{
 				quit = true;
 			}
-
 		}
-
-		// Clear screen
-		SDL_SetRenderDrawColor(m_Renderer, 0xFF, 0xFF, 0xFF, 0xFF);
-		SDL_RenderClear(m_Renderer);
-
-		SDL_RenderPresent(m_Renderer);
 	}
 }

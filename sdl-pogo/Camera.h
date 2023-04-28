@@ -8,6 +8,7 @@ class Camera
 public:
 	void Initialize();
 	void Close();
+	void Render();
 
 	SDL_Window* GetWindow() {
 		return m_Window;
