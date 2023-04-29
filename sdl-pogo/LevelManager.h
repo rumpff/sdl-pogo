@@ -13,8 +13,9 @@ public:
 	virtual void Initalize();
 	virtual void Close();
 	virtual void GameTick(double deltaTime);
+	virtual void Render(SDL_Renderer* renderer);
 
 protected:
-
+	ObjectManager* m_ObjectManager;
 };
 

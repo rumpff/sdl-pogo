@@ -34,13 +34,14 @@ void Camera::Close()
 	m_Window = NULL;
 }
 
-void Camera::Render()
+void Camera::Render(LevelManager* currentLevel)
 {
 	// Clear screen
 	SDL_SetRenderDrawColor(m_Renderer, 0xFF, 0xFF, 0xFF, 0xFF);
 	SDL_RenderClear(m_Renderer);
 
 	// Render stuff here
+	currentLevel->Render(m_Renderer);
 
 	SDL_RenderPresent(m_Renderer);
 }

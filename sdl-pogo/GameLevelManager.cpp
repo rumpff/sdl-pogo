@@ -2,10 +2,11 @@
 
 void GameLevelManager::Initalize()
 {
-	m_ObjectManager = new ObjectManager();
+	LevelManager::Initalize();
+
 	m_GameplayManager = new GameplayManager();
 
-
+	m_ObjectManager->CreateObject(new PlayerObject());
 }
 
 void GameLevelManager::Close()

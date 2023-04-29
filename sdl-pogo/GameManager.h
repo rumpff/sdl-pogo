@@ -18,6 +18,7 @@
 class GameManager : 
 	public Manager
 {
+
 public:
 	virtual void Initalize();
 	virtual void Close();

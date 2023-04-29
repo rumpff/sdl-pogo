@@ -3,6 +3,8 @@
 
 #include <SDL.h>
 
+#include "LevelManager.h"
+
 /// <summary>
 /// Handles SDL window and rendering
 /// </summary>
@@ -14,7 +16,7 @@ public:
 
 	void Initialize();
 	void Close();
-	void Render();
+	void Render(LevelManager* currentLevel);
 
 	SDL_Window* GetWindow() {
 		return m_Window;

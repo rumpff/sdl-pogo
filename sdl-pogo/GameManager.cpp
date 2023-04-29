@@ -93,6 +93,6 @@ void GameManager::Game()
 		}
 
 		m_CurrentLevel->GameTick(1.0 / 60.0);
-		m_Camera->Render();
+		m_Camera->Render(m_CurrentLevel);
 	}
 }

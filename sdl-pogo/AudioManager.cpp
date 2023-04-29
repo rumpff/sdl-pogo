@@ -12,3 +12,8 @@ void AudioManager::Initalize()
 		printf("mixer init errror SDL_mixer Error : %s\n", Mix_GetError());
 	}
 }
+
+void AudioManager::Close()
+{
+	// yo, kallum
+}

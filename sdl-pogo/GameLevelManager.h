@@ -13,6 +13,5 @@ public:
 
 private:
 	GameplayManager* m_GameplayManager;
-	ObjectManager* m_ObjectManager;
 };
 
