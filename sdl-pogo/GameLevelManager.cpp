@@ -14,3 +14,8 @@ void GameLevelManager::Close()
 	m_GameplayManager->Close(); delete m_GameplayManager;
 	
 }
+
+void GameLevelManager::GameTick(double deltaTime)
+{
+	m_ObjectManager->GameTick(deltaTime);
+}

@@ -12,8 +12,9 @@ class LevelManager :
 public:
 	virtual void Initalize();
 	virtual void Close();
+	virtual void GameTick(double deltaTime);
 
 protected:
-	ObjectManager* m_ObjectManager;
+
 };
 

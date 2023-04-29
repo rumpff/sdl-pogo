@@ -3,6 +3,9 @@
 
 #include <SDL.h>
 
+/// <summary>
+/// Handles SDL window and rendering
+/// </summary>
 class Camera
 {
 public:

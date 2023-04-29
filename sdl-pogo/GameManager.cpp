@@ -91,5 +91,8 @@ void GameManager::Game()
 				quit = true;
 			}
 		}
+
+		m_CurrentLevel->GameTick(1.0 / 60.0);
+		m_Camera->Render();
 	}
 }
