@@ -8,7 +8,7 @@ class GameplayManager :
 	public Manager
 {
 public:
-	virtual void Initalize();
+	virtual void Initialize();
 	virtual void Close();
 };
 

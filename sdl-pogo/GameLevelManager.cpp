@@ -1,12 +1,10 @@
 #include "GameLevelManager.h"
 
-void GameLevelManager::Initalize()
+void GameLevelManager::Initialize()
 {
-	LevelManager::Initalize();
+	LevelManager::Initialize();
 
 	m_GameplayManager = new GameplayManager();
-
-	m_ObjectManager->CreateObject(new PlayerObject());
 }
 
 void GameLevelManager::Close()
@@ -16,7 +14,8 @@ void GameLevelManager::Close()
 	
 }
 
-void GameLevelManager::GameTick(double deltaTime)
+void GameLevelManager::Tick(double deltaTime)
 {
 	m_ObjectManager->GameTick(deltaTime);
+	m_ObjectManager->PhysicsTick(Gravity, deltaTime);
 }

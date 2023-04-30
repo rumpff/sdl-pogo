@@ -1,6 +1,6 @@
 #include "Manager.h"
 
-void Manager::Initalize()
+void Manager::Initialize()
 {
 	m_IsInitalized = true;
 }

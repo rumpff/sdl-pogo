@@ -4,7 +4,8 @@ class PlayerObject :
     public GameObject
 {
 public:
-    virtual void GameTick(double deltaTime);
+    virtual void OnCreate();
+    virtual void Tick(double deltaTime);
     virtual void Render(SDL_Renderer* renderer);
 };
 

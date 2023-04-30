@@ -1,8 +1,11 @@
 #include "LevelManager.h"
 
-void LevelManager::Initalize()
+void LevelManager::Initialize()
 {
 	m_ObjectManager = new ObjectManager();
+	m_ObjectManager->Initialize();
+
+	Manager::Initialize();
 }
 
 void LevelManager::Close()
@@ -10,7 +13,7 @@ void LevelManager::Close()
 	// de mazzel
 }
 
-void LevelManager::GameTick(double deltaTime)
+void LevelManager::Tick(double deltaTime)
 {
 	// tick tock 
 }

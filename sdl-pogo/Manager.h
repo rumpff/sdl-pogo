@@ -1,4 +1,5 @@
 #pragma once
+#include <SDL.h>
 
 class Manager
 {
@@ -6,7 +7,7 @@ public:
 	/// <summary>
 	/// Call when finishing initalization
 	/// </summary>
-	virtual void Initalize();
+	virtual void Initialize();
 	virtual void Close();
 	virtual bool IsInitialzed();
 

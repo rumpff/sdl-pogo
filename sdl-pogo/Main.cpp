@@ -4,7 +4,7 @@ int main(int argc, char* args[])
 {
 	GameManager gameManager;
 
-	gameManager.Initalize();
+	gameManager.Initialize();
 	gameManager.Game();
 	gameManager.Close();
 

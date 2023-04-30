@@ -1,6 +1,6 @@
 #include "GameplayManager.h"
 
-void GameplayManager::Initalize()
+void GameplayManager::Initialize()
 {
 	// hoi
 }

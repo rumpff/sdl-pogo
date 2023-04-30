@@ -1,6 +1,6 @@
 #include "GameManager.h"
 
-void GameManager::Initalize()
+void GameManager::Initialize()
 {
 	// Initialize SDL
 	if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_AUDIO) < 0)
@@ -26,7 +26,7 @@ void GameManager::Initalize()
 		}
 
 		m_AudioManager = new AudioManager();
-		m_AudioManager->Initalize();
+		m_AudioManager->Initialize();
 	}
 
 	m_ResourceLoader = new ResourceLoader();
@@ -34,7 +34,7 @@ void GameManager::Initalize()
 	// Load first level
 	ChangeLevel(new GameLevelManager());
 
-	Manager::Initalize();
+	Manager::Initialize();
 }
 
 void GameManager::Close()
@@ -61,7 +61,7 @@ void GameManager::ChangeLevel(LevelManager* newLevel)
 	}
 
 	m_CurrentLevel = newLevel;
-	m_CurrentLevel->Initalize();
+	m_CurrentLevel->Initialize();
 }
 
 void GameManager::Game()
@@ -92,7 +92,7 @@ void GameManager::Game()
 			}
 		}
 
-		m_CurrentLevel->GameTick(1.0 / 60.0);
+		m_CurrentLevel->Tick(1.0 / 60.0);
 		m_Camera->Render(m_CurrentLevel);
 	}
 }

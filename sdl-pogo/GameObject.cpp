@@ -1,6 +1,11 @@
 #include "GameObject.h"
 
-void GameObject::GameTick(double deltaTime)
+void GameObject::OnCreate()
+{
+	// No default behaviour
+}
+
+void GameObject::Tick(double deltaTime)
 {
 	// No default behaviour
 }

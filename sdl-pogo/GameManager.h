@@ -20,7 +20,7 @@ class GameManager :
 {
 
 public:
-	virtual void Initalize();
+	virtual void Initialize();
 	virtual void Close();
 	void ChangeLevel(LevelManager* newLevel);
 	void Game();

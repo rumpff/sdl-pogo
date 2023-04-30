@@ -7,9 +7,9 @@ class GameLevelManager :
     public LevelManager
 {
 public:
-	virtual void Initalize();
+	virtual void Initialize();
 	virtual void Close();
-	virtual void GameTick(double deltaTime);
+	virtual void Tick(double deltaTime);
 
 private:
 	GameplayManager* m_GameplayManager;

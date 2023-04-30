@@ -4,7 +4,7 @@
 
 #include <SDL_mixer.h>
 
-void AudioManager::Initalize()
+void AudioManager::Initialize()
 {
 	// Initialze SDL Mixer
 	if (Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, 2, 2048) < 0)

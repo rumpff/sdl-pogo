@@ -10,9 +10,11 @@ class LevelManager :
 	public Manager
 {
 public:
-	virtual void Initalize();
+	SDL_FPoint Gravity{ 0, 0.1  };
+
+	virtual void Initialize();
 	virtual void Close();
-	virtual void GameTick(double deltaTime);
+	virtual void Tick(double deltaTime);
 	virtual void Render(SDL_Renderer* renderer);
 
 protected:

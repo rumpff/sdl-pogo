@@ -8,7 +8,7 @@ class AudioManager :
 	public Manager
 {
 public:
-	virtual void Initalize();
+	virtual void Initialize();
 	virtual void Close();
 };
 
