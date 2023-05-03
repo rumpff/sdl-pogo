@@ -9,7 +9,7 @@ class GameObject
 {
 public:
 	bool HandlePhysics = false;
-	SDL_FPoint Position;
+	SDL_FPoint Position, PositionPrev;
 	float Rotation;
 	float ColliderLength;
 

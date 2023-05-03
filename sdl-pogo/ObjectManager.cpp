@@ -33,7 +33,7 @@ void ObjectManager::PhysicsTick(SDL_FPoint gravity, double deltaTime)
 
 		if (!object->HandlePhysics)
 			continue;
-		
+
 		SDL_FPoint velocity = object->Velocity;
 
 		// Modify Velocities
@@ -44,6 +44,7 @@ void ObjectManager::PhysicsTick(SDL_FPoint gravity, double deltaTime)
 		object->Velocity = velocity;
 
 		// Move Object
+		object->PositionPrev = object->Position;
 		object->Position.x += object->Velocity.x;
 		object->Position.y += object->Velocity.y;
 
@@ -56,18 +57,43 @@ void ObjectManager::PhysicsTick(SDL_FPoint gravity, double deltaTime)
 
 			GameObject* otherObject = m_GameObjects[j];
 
-			std::pair<bool, SDL_FPoint> intersect = IntersectCheck(object->GetCollider(), otherObject->GetCollider());
+			std::pair < SDL_FPoint, SDL_FPoint> objectCollider = object->GetCollider();
+			std::pair < SDL_FPoint, SDL_FPoint> otherCollider = otherObject->GetCollider();
 
-			// Continue if no intersection
-			if (!intersect.first)
-				continue;
-			
-			object->Position = intersect.second;
-			object->Velocity = { object->Velocity.x, 0 };
+			std::pair<bool, SDL_FPoint> intersect = IntersectCheck(objectCollider, otherCollider);
+
+			// Check if intersect
+			if (!intersect.first)	
+			{
+				// Fallback check
+				std::pair < SDL_FPoint, SDL_FPoint> path = { object->PositionPrev, object->Position };
+				intersect = IntersectCheck(path, otherCollider);
+
+				if (!intersect.first)
+					continue;
+			}
+
+			// Find line end to snap object to
+			SDL_FPoint anchor;
+			std::pair < SDL_FPoint, SDL_FPoint> objectColliderLocal = object->GetColliderLocal();
+
+			float distToFirst = std::hypotf(object->Velocity.x - objectColliderLocal.first.x, object->Velocity.y - objectColliderLocal.first.y );
+			float distToSecond = std::hypotf(object->Velocity.x - objectColliderLocal.second.x, object->Velocity.y - objectColliderLocal.second.y);
+
+			if(distToSecond < distToFirst) { anchor = objectColliderLocal.second; }
+			else { anchor = objectColliderLocal.first; }
+
+			SDL_FPoint newPos
+			{
+				intersect.second.x - anchor.x,
+				intersect.second.y - anchor.y,
+			};
+
+			object->Position = newPos;
+			object->Velocity = { 0, 0 };
 
 			object->OnCollision();
 		}
-
 	}
 }
 
