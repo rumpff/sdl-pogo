@@ -10,7 +10,7 @@ class LevelManager :
 	public Manager
 {
 public:
-	SDL_FPoint Gravity{ 0, 0.1  };
+	SDL_FPoint Gravity{ 0, 0.05  };
 
 	virtual void Initialize();
 	virtual void Close();
