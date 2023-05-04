@@ -5,6 +5,7 @@
 void GeometryObject::OnCreate()
 {
     HandlePhysics = false;
+    PhysicsMode = Rigid;
     Position = { 1280 / 2, 720 / 1.5f };
     ColliderLength = 300;  
     Rotation = 10;

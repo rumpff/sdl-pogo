@@ -45,32 +45,44 @@ std::pair < SDL_FPoint, SDL_FPoint> GameObject::GetCollider()
 	return line;
 }
 
-void GameObject::OnCollisionEnter()
+void GameObject::OnCollisionEnter(GameObject* o)
 {
 	// No default behaviour
+
+	printf("collision enter\n");
 }
 
-void GameObject::OnCollision()
+void GameObject::OnCollision(GameObject* o)
 {
 	// No default behaviour
+
+	printf("colliding...\n");
 }
 
-void GameObject::OnCollisionExit()
+void GameObject::OnCollisionExit(GameObject* o)
 {
 	// No default behaviour
+
+	printf("collision exit\n");
 }
 
-void GameObject::OnTriggerEnter()
+void GameObject::OnTriggerEnter(GameObject* o)
 {
 	// No default behaviour
+
+	printf("trigger enter\n");
 }
 
-void GameObject::OnTrigger()
+void GameObject::OnTrigger(GameObject* o)
 {
 	// No default behaviour
+
+	printf("triggered...\n");
 }
 
-void GameObject::OnTriggerExit()
+void GameObject::OnTriggerExit(GameObject* o)
 {
 	// No default behaviour
+
+	printf("trigger exit\n");
 }

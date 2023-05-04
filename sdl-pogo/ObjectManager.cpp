@@ -52,6 +52,9 @@ void ObjectManager::PhysicsTick(SDL_FPoint gravity, double deltaTime)
 		object->Position.x += object->Velocity.x;
 		object->Position.y += object->Velocity.y;
 
+		std::vector<GameObject*> collideTest = object->CollidingObjects;
+		object->CollidingObjects.clear();
+
 		// Check for intersection
 		for (size_t j = 0; j < m_GameObjects.size(); j++)
 		{
@@ -81,6 +84,21 @@ void ObjectManager::PhysicsTick(SDL_FPoint gravity, double deltaTime)
 					continue;
 			}
 
+			// See if object was already colliding
+			bool isFirst = true;
+
+			for (size_t k = 0; k < collideTest.size(); k++)
+			{
+				if (collideTest[k] == otherObject)
+				{
+					isFirst = false;
+					collideTest.erase(collideTest.begin() + k);
+					break;
+				}
+			}
+
+			object->CollidingObjects.push_back(otherObject);
+
 			// Find line end to snap object to
 			if (otherObject->PhysicsMode == Rigid)
 			{
@@ -102,15 +120,42 @@ void ObjectManager::PhysicsTick(SDL_FPoint gravity, double deltaTime)
 				object->Position = newPos;
 				object->Velocity = { 0, 0 };
 
-				object->OnCollision();
+				if (isFirst)
+					object->OnCollisionEnter(otherObject);
+
+				object->OnCollision(otherObject);
 			}
 			else if (otherObject->PhysicsMode == Trigger)
 			{
-				object->OnTrigger();
+				if (isFirst)
+					object->OnTriggerEnter(otherObject);
+
+				object->OnTrigger(otherObject);
 			}
 			else
 			{
 				printf("ERROR! Unimplemented physics mode \n");
+			}
+		}
+
+		if (collideTest.size() > 0)
+		{
+			for (size_t k = 0; k < collideTest.size(); k++)
+			{
+				GameObject* otherObject = collideTest[k];
+
+				if (otherObject->PhysicsMode == Rigid)
+				{
+					object->OnCollisionExit(otherObject);
+				}
+				else if (otherObject->PhysicsMode == Trigger)
+				{
+					object->OnTriggerExit(otherObject);
+				}
+				else
+				{
+					printf("ERROR! Unimplemented physics mode \n");
+				}
 			}
 		}
 	}

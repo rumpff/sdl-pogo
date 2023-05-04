@@ -33,13 +33,13 @@ public:
 	virtual void Tick(double deltaTime);
 	virtual void Render(SDL_Renderer* renderer);
 
-	virtual void OnCollisionEnter();
-	virtual void OnCollision();
-	virtual void OnCollisionExit();
+	virtual void OnCollisionEnter(GameObject* o);
+	virtual void OnCollision(GameObject* o);
+	virtual void OnCollisionExit(GameObject* o);
 
-	virtual void OnTriggerEnter();
-	virtual void OnTrigger();
-	virtual void OnTriggerExit();
+	virtual void OnTriggerEnter(GameObject* o);
+	virtual void OnTrigger(GameObject* o);
+	virtual void OnTriggerExit(GameObject* o);
 
 	/// <summary>
 	/// Calculates collider line segment in local space
