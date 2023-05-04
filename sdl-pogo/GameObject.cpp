@@ -6,6 +6,11 @@ void GameObject::OnCreate()
 	// No default behaviour
 }
 
+void GameObject::OnDestroy()
+{
+	// No default behaviour
+}
+
 void GameObject::Tick(double deltaTime)
 {
 	// No default behaviour
@@ -40,7 +45,32 @@ std::pair < SDL_FPoint, SDL_FPoint> GameObject::GetCollider()
 	return line;
 }
 
+void GameObject::OnCollisionEnter()
+{
+	// No default behaviour
+}
+
 void GameObject::OnCollision()
 {
-	printf("IM COLLIDING!!! ");
+	// No default behaviour
+}
+
+void GameObject::OnCollisionExit()
+{
+	// No default behaviour
+}
+
+void GameObject::OnTriggerEnter()
+{
+	// No default behaviour
+}
+
+void GameObject::OnTrigger()
+{
+	// No default behaviour
+}
+
+void GameObject::OnTriggerExit()
+{
+	// No default behaviour
 }

@@ -8,7 +8,11 @@ void ObjectManager::Initialize()
 
 void ObjectManager::Close()
 {
-	// Later he
+	for (size_t i = 0; i < m_GameObjects.size(); i++)
+	{
+		m_GameObjects[i]->OnDestroy();
+		delete m_GameObjects[i];
+	}
 }
 
 void ObjectManager::CreateObject(GameObject* newObject)
@@ -57,6 +61,10 @@ void ObjectManager::PhysicsTick(SDL_FPoint gravity, double deltaTime)
 
 			GameObject* otherObject = m_GameObjects[j];
 
+			// Skip if collider is disabled
+			if (otherObject->PhysicsMode == Passthrough)
+				continue;
+
 			std::pair < SDL_FPoint, SDL_FPoint> objectCollider = object->GetCollider();
 			std::pair < SDL_FPoint, SDL_FPoint> otherCollider = otherObject->GetCollider();
 
@@ -74,25 +82,36 @@ void ObjectManager::PhysicsTick(SDL_FPoint gravity, double deltaTime)
 			}
 
 			// Find line end to snap object to
-			SDL_FPoint anchor;
-			std::pair < SDL_FPoint, SDL_FPoint> objectColliderLocal = object->GetColliderLocal();
-
-			float distToFirst = std::hypotf(object->Velocity.x - objectColliderLocal.first.x, object->Velocity.y - objectColliderLocal.first.y );
-			float distToSecond = std::hypotf(object->Velocity.x - objectColliderLocal.second.x, object->Velocity.y - objectColliderLocal.second.y);
-
-			if(distToSecond < distToFirst) { anchor = objectColliderLocal.second; }
-			else { anchor = objectColliderLocal.first; }
-
-			SDL_FPoint newPos
+			if (otherObject->PhysicsMode == Rigid)
 			{
-				intersect.second.x - anchor.x,
-				intersect.second.y - anchor.y,
-			};
+				SDL_FPoint anchor;
+				std::pair < SDL_FPoint, SDL_FPoint> objectColliderLocal = object->GetColliderLocal();
 
-			object->Position = newPos;
-			object->Velocity = { 0, 0 };
+				float distToFirst = std::hypotf(object->Velocity.x - objectColliderLocal.first.x, object->Velocity.y - objectColliderLocal.first.y);
+				float distToSecond = std::hypotf(object->Velocity.x - objectColliderLocal.second.x, object->Velocity.y - objectColliderLocal.second.y);
 
-			object->OnCollision();
+				if (distToSecond < distToFirst) { anchor = objectColliderLocal.second; }
+				else { anchor = objectColliderLocal.first; }
+
+				SDL_FPoint newPos
+				{
+					intersect.second.x - anchor.x,
+					intersect.second.y - anchor.y,
+				};
+
+				object->Position = newPos;
+				object->Velocity = { 0, 0 };
+
+				object->OnCollision();
+			}
+			else if (otherObject->PhysicsMode == Trigger)
+			{
+				object->OnTrigger();
+			}
+			else
+			{
+				printf("ERROR! Unimplemented physics mode \n");
+			}
 		}
 	}
 }

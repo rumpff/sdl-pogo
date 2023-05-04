@@ -7,7 +7,7 @@ void PlayerObject::OnCreate()
     Position = { 1280.0f / 2.0f, 720.0f / 2.0f };
     Velocity = { 0.0f, -4.0f };
     ColliderLength = 50.0f;
-    Rotation = M_PI / 4;
+    Rotation = -M_PI / 2;
 }
 
 void PlayerObject::Tick(double deltaTime)
