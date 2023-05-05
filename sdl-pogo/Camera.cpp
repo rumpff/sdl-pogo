@@ -12,7 +12,7 @@ void Camera::Initialize()
 	}
 
 	// Create renderer
-	m_Renderer = SDL_CreateRenderer(m_Window, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
+	m_Renderer = SDL_CreateRenderer(m_Window, -1, SDL_RENDERER_ACCELERATED); //| SDL_RENDERER_PRESENTVSYNC);
 	if (m_Renderer == NULL)
 	{
 		printf("something went wrong while creating the renderer lmao");

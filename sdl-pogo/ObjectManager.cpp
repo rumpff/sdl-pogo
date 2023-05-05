@@ -41,8 +41,8 @@ void ObjectManager::PhysicsTick(SDL_FPoint gravity, double deltaTime)
 		SDL_FPoint velocity = object->Velocity;
 
 		// Modify Velocities
-		velocity.x += gravity.x;
-		velocity.y += gravity.y;
+		velocity.x += gravity.x * deltaTime;
+		velocity.y += gravity.y * deltaTime;
 
 		// Apply Velocities
 		object->Velocity = velocity;
@@ -77,10 +77,10 @@ void ObjectManager::PhysicsTick(SDL_FPoint gravity, double deltaTime)
 			if (!intersect.first)	
 			{
 				// Fallback check
-				std::pair < SDL_FPoint, SDL_FPoint> path = { object->PositionPrev, object->Position };
-				intersect = IntersectCheck(path, otherCollider);
+				//std::pair < SDL_FPoint, SDL_FPoint> path = { object->PositionPrev, object->Position };
+				//intersect = IntersectCheck(path, otherCollider);
 
-				if (!intersect.first)
+				//if (!intersect.first)
 					continue;
 			}
 
@@ -108,8 +108,16 @@ void ObjectManager::PhysicsTick(SDL_FPoint gravity, double deltaTime)
 				float distToFirst = std::hypotf(object->Velocity.x - objectColliderLocal.first.x, object->Velocity.y - objectColliderLocal.first.y);
 				float distToSecond = std::hypotf(object->Velocity.x - objectColliderLocal.second.x, object->Velocity.y - objectColliderLocal.second.y);
 
-				if (distToSecond < distToFirst) { anchor = objectColliderLocal.second; }
-				else { anchor = objectColliderLocal.first; }
+				if (distToSecond < distToFirst) 
+				{ 
+					anchor = objectColliderLocal.second; 
+					printf("pick second \n");
+				}
+				else 
+				{ 
+					anchor = objectColliderLocal.first; 
+					printf("pick first \n");
+				}
 
 				SDL_FPoint newPos
 				{

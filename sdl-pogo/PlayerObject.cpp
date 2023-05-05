@@ -1,36 +1,96 @@
 #include "PlayerObject.h"
-#include <cmath>
 
+// PlayerObject
 void PlayerObject::OnCreate()
 {
+    Tag = "player";
     HandlePhysics = true;
     Position = { 1280.0f / 2.0f, 720.0f / 2.0f };
-    Velocity = { 0.0f, -4.0f };
+    Velocity = { 0.0f, -0.0f };
     ColliderLength = 50.0f;
-    Rotation = -M_PI / 8;
+    Rotation = -M_PI / 2.0f;
+
+    ChangeState(new PlayerAirborneState());
 }
 
 void PlayerObject::Tick(double deltaTime)
 {
-    // Nog niks
+    if (m_CurrentState != 0)
+        m_CurrentState->StateTick(deltaTime);
 }
 
 void PlayerObject::Render(SDL_Renderer* renderer)
 {
-    SDL_FRect fillRect = { Position.x - (ColliderLength /2), Position.y - (ColliderLength / 2), 
-        ColliderLength, ColliderLength };
+    //SDL_FRect fillRect = { Position.x - (ColliderLength /2), Position.y - (ColliderLength / 2), 
+    //    ColliderLength, ColliderLength };
 
-    SDL_SetRenderDrawColor(renderer, 0xFF, 0x00, 0x00, 0xFF);
-    SDL_RenderFillRectF(renderer, &fillRect);
+    //SDL_SetRenderDrawColor(renderer, 0xFF, 0x00, 0x00, 0xFF);
+    //SDL_RenderFillRectF(renderer, &fillRect);
 
-
-    // Draw collider
     std::pair < SDL_FPoint, SDL_FPoint> collider = GetCollider();
 
-    SDL_SetRenderDrawColor(renderer, 0x00, 0x00, 0x00, 0xFF);
-    SDL_RenderDrawLineF(renderer, + collider.first.x, + collider.first.y, collider.second.x, collider.second.y);
+    float barSize = 15;
 
+    std::pair< SDL_FPoint, SDL_FPoint> handleBar
+    {
+        {
+            (cosf(Rotation + (M_PI / 2.0f)) * barSize) + collider.first.x,
+            (sinf(Rotation + (M_PI / 2.0f)) * barSize) + collider.first.y
+        },
 
-    SDL_FRect marker = { collider.first.x, collider.first.y, 10, 10 };
-    SDL_RenderFillRectF(renderer, &marker);
+        {
+            (cosf(Rotation - (M_PI / 2.0f)) * barSize) + collider.first.x,
+            (sinf(Rotation - (M_PI / 2.0f)) * barSize) + collider.first.y
+        }
+    };
+
+    SDL_SetRenderDrawColor(renderer, 0xFF, 0x00, 0x00, 0xFF);
+    SDL_RenderDrawLineF(renderer, collider.first.x, collider.first.y, collider.second.x, collider.second.y);
+    SDL_RenderDrawLineF(renderer, handleBar.first.x, handleBar.first.y, handleBar.second.x, handleBar.second.y);
+
 }
+
+void PlayerObject::OnCollisionEnter(GameObject* o)
+{
+    if (m_CurrentState != 0)
+        m_CurrentState->OnCollisionEnter(o);
+}
+void PlayerObject::OnCollision(GameObject* o)
+{
+    if (m_CurrentState != 0)
+        m_CurrentState->OnCollision(o);
+}
+void PlayerObject::OnCollisionExit(GameObject* o)
+{
+    if (m_CurrentState != 0)
+        m_CurrentState->OnCollisionExit(o);
+}
+
+void PlayerObject::OnTriggerEnter(GameObject* o)
+{
+    if (m_CurrentState != 0)
+        m_CurrentState->OnTriggerEnter(o);
+}
+void PlayerObject::OnTrigger(GameObject* o)
+{
+    if (m_CurrentState != 0)
+        m_CurrentState->OnTrigger(o);
+}
+void PlayerObject::OnTriggerExit(GameObject* o)
+{
+    if (m_CurrentState != 0)
+        m_CurrentState->OnTriggerExit(o);
+}
+
+void PlayerObject::ChangeState(PlayerState* newState)
+{
+    if (m_CurrentState != 0)
+    {
+        m_CurrentState->StateExit();
+        delete m_CurrentState;
+    }
+        
+    m_CurrentState = newState;
+    m_CurrentState->StateEnter(this);
+}
+

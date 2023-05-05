@@ -2,6 +2,7 @@
 #include "Manager.h"
 
 #include <vector>
+#include <sstream>
 
 #include "GameObject.h"
 #include "PlayerObject.h"

@@ -4,11 +4,12 @@
 
 void GeometryObject::OnCreate()
 {
+    Tag = "geometry";
     HandlePhysics = false;
     PhysicsMode = Rigid;
     Position = { 1280 / 2, 720 / 1.5f };
-    ColliderLength = 300;  
-    Rotation = 10;
+    ColliderLength = 720;  
+    Rotation = 0;
 }
 
 void GeometryObject::Render(SDL_Renderer* renderer)

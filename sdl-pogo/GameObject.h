@@ -17,6 +17,7 @@ enum CollisionMode
 class GameObject
 {
 public:
+	std::string Tag = "none";
 	bool HandlePhysics = false;
 	CollisionMode PhysicsMode = Passthrough;
 	std::vector<GameObject*> CollidingObjects;
