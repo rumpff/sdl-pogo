@@ -1,5 +1,7 @@
 #include "GameManager.h"
 
+#include <string>
+
 void GameManager::Initialize()
 {
 	// Initialize SDL
@@ -79,9 +81,21 @@ void GameManager::Game()
 	//Event handler
 	SDL_Event e;
 
+	// deltatime implementation from https://gamedev.stackexchange.com/a/110831
+	Uint64 NOW = SDL_GetPerformanceCounter();
+	Uint64 LAST = 0;
+	double deltaTime = 0;
+
+
 	//While application is running
 	while (!quit)
 	{
+		// Update deltatime
+		LAST = NOW;
+		NOW = SDL_GetPerformanceCounter();
+
+		deltaTime = (double)((NOW - LAST) / (double)SDL_GetPerformanceFrequency());
+
 		//Handle events on queue
 		while (SDL_PollEvent(&e) != 0)
 		{
@@ -92,7 +106,7 @@ void GameManager::Game()
 			}
 		}
 
-		m_CurrentLevel->Tick(1.0 / 60.0);
+		m_CurrentLevel->Tick(deltaTime);
 		m_Camera->Render(m_CurrentLevel);
 	}
 }
