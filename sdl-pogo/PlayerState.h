@@ -53,7 +53,7 @@ private:
     
     float Dot(SDL_FPoint a, SDL_FPoint b);
     float VectorAngle(SDL_FPoint a, SDL_FPoint b);
-    SDL_FPoint VectorReflect(SDL_FPoint velocity, SDL_FPoint normal);
+    SDL_FPoint VectorBounce(SDL_FPoint velocity, SDL_FPoint normal, float friction);
     SDL_FPoint VectorMultiply(SDL_FPoint a, float b);
     SDL_FPoint VectorDivide(SDL_FPoint a, SDL_FPoint b);
     SDL_FPoint VectorSubtract(SDL_FPoint a, SDL_FPoint b);

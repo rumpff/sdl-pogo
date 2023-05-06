@@ -149,7 +149,7 @@ void PlayerAirborneState::Bounce(Collision c)
     printf("\nrotate: ");
     printf(std::to_string(c.Object->Rotation).c_str());
 
-    m_Player->Velocity = VectorReflect(c.ImpactVelocity, normal);
+    m_Player->Velocity = VectorBounce(c.ImpactVelocity, normal, 0.6f);
 }
 
 float PlayerAirborneState::Dot(SDL_FPoint a, SDL_FPoint b)
@@ -166,13 +166,13 @@ float PlayerAirborneState::VectorAngle(SDL_FPoint a, SDL_FPoint b)
     return angle;
 }
 
-SDL_FPoint PlayerAirborneState::VectorReflect(SDL_FPoint velocity, SDL_FPoint normal)
+SDL_FPoint PlayerAirborneState::VectorBounce(SDL_FPoint velocity, SDL_FPoint normal, float friction)
 {
     // https://stackoverflow.com/a/573206
     SDL_FPoint u = VectorMultiply(normal, Dot(velocity, normal) / Dot(normal, normal));
     SDL_FPoint w = VectorSubtract(velocity, u);
 
-    return VectorSubtract(w, u);
+    return VectorSubtract(VectorMultiply(w, friction), VectorMultiply(u, 1));
 }
 
 SDL_FPoint PlayerAirborneState::VectorMultiply(SDL_FPoint a, float b)
