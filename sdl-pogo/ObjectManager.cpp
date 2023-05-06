@@ -13,8 +13,8 @@ void ObjectManager::Initialize()
 		wall->Rotation = i * ((M_PI * 2) / 4) + (M_PI / 8);
 		wall->Position =
 		{
-			(1280 / 2) - cosf(wall->Rotation + (M_PI/2)) * (wallSize / 2),
-			(720 / 2) - sinf(wall->Rotation + (M_PI/2)) * (wallSize / 2)
+			(1280 / 2) - cosf(wall->Rotation - (M_PI/2)) * (wallSize / 2),
+			(720 / 2) - sinf(wall->Rotation - (M_PI/2)) * (wallSize / 2)
 		};
 	}
 	
@@ -65,8 +65,8 @@ void ObjectManager::PhysicsTick(SDL_FPoint gravity, double deltaTime)
 		object->Velocity = velocity;
 
 		// Move Object
-		object->Position.x += object->Velocity.x;
-		object->Position.y += object->Velocity.y;
+		object->Position.x += object->Velocity.x * deltaTime;
+		object->Position.y += object->Velocity.y * deltaTime;
 
 		std::vector<GameObject*> collideTest = object->CollidingObjects;
 		object->CollidingObjects.clear();

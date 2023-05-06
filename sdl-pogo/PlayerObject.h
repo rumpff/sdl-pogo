@@ -4,14 +4,14 @@
 #include "Collision.h"
 
 #include <cmath>
-#include <sstream>
+#include <sstream>https://discord.com/channels/@me/941736042308980747
 
 class PlayerObject :
     public GameObject
 {
 public:
     SDL_FPoint kut = { 0,0 };
-    const float JumpHeight = 0.2;
+    const float JumpHeight = 800;
 
     virtual void OnCreate();
     virtual void Tick(double deltaTime);
