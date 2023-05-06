@@ -37,7 +37,7 @@ void Camera::Close()
 void Camera::Render(LevelManager* currentLevel)
 {
 	// Clear screen
-	SDL_SetRenderDrawColor(m_Renderer, 0xFF, 0xFF, 0xFF, 0xFF);
+	SDL_SetRenderDrawColor(m_Renderer, 0x00, 0x00, 0x00, 0xFF);
 	SDL_RenderClear(m_Renderer);
 
 	// Render stuff here

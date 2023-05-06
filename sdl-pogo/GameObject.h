@@ -6,6 +6,8 @@
 #include <utility>
 #include <SDL.h>
 
+#include "Collision.h"
+
 enum CollisionMode
 {
 	Rigid,
@@ -23,7 +25,7 @@ public:
 	std::vector<GameObject*> CollidingObjects;
 
 	SDL_FPoint Position, PositionPrev;
-	float Rotation;
+	float Rotation, RotationPrev;
 	float ColliderLength;
 
 	SDL_FPoint Velocity;
@@ -32,15 +34,16 @@ public:
 	virtual void OnCreate();
 	virtual void OnDestroy();
 	virtual void Tick(double deltaTime);
+	virtual void UpdatePrev();
 	virtual void Render(SDL_Renderer* renderer);
 
-	virtual void OnCollisionEnter(GameObject* o);
-	virtual void OnCollision(GameObject* o);
-	virtual void OnCollisionExit(GameObject* o);
+	virtual void OnCollisionEnter(Collision c);
+	virtual void OnCollision(Collision c);
+	virtual void OnCollisionExit(Collision c);
 
-	virtual void OnTriggerEnter(GameObject* o);
-	virtual void OnTrigger(GameObject* o);
-	virtual void OnTriggerExit(GameObject* o);
+	virtual void OnTriggerEnter(Collision c);
+	virtual void OnTrigger(Collision c);
+	virtual void OnTriggerExit(Collision c);
 
 	/// <summary>
 	/// Calculates collider line segment in local space
@@ -50,5 +53,16 @@ public:
 	/// Calculates collider line segment in world space
 	/// </summary>
 	std::pair < SDL_FPoint, SDL_FPoint> GetCollider();
+
+	/// Use RotationPrev to calculate collider line segment in local space
+	std::pair < SDL_FPoint, SDL_FPoint> GetColliderPrevLocal();
+	/// <summary>
+	/// Use RotationPrev to calculate collider line segment in world space 
+	/// </summary>
+	/// <returns></returns>
+	std::pair < SDL_FPoint, SDL_FPoint> GetColliderPrev();
+
+private:
+	std::pair< SDL_FPoint, SDL_FPoint> CalcLine(float angle, float length);
 };
 

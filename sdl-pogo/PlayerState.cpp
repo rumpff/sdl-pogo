@@ -32,6 +32,11 @@ void PlayerGroundedState::StateTick(double deltaTime)
         return;
     }
 
+    if (currentKeyStates[SDL_SCANCODE_DOWN])
+    {
+        m_Player->Rotation = -M_PI / 2;
+    }
+
     if (currentKeyStates[SDL_SCANCODE_LEFT])
     {
         Rotate(-10 * deltaTime);
@@ -84,7 +89,17 @@ void PlayerAirborneState::StateEnter(PlayerObject* player)
 
 void PlayerAirborneState::StateTick(double deltaTime)
 {
-    //hm
+    // Check input (this could be cleaner?)
+    const Uint8* currentKeyStates = SDL_GetKeyboardState(NULL);
+
+    if (currentKeyStates[SDL_SCANCODE_LEFT])
+    {
+        m_Player->Rotation -= 10 * deltaTime;
+    }
+    else if (currentKeyStates[SDL_SCANCODE_RIGHT])
+    {
+        m_Player->Rotation += 10 * deltaTime;
+    }
 }
 
 void PlayerAirborneState::StateExit()
@@ -92,25 +107,61 @@ void PlayerAirborneState::StateExit()
     //hm
 }
 
-void PlayerAirborneState::OnCollision(GameObject* o)
+void PlayerAirborneState::OnCollision(Collision c)
 {
-    printf(o->Tag.c_str());
-
-    if(o->Tag == "geometry")
+    if(c.Object->Tag == "geometry")
     {
-        // Decide if player bounces or gets grounded
-        Ground();
+        if (c.ColliderAnchor == 1)
+        {
+            Bounce(c);
+        }
+        if (c.ColliderAnchor == 2)
+        {
+            Ground();
+        }
     }
 }
 
 void PlayerAirborneState::Ground()
 {
-    printf("yuuupp");
-
     m_Player->ChangeState(new PlayerGroundedState());
 }
 
-void PlayerAirborneState::Bounce()
-{
+void PlayerAirborneState::Bounce(Collision c)
+{    
+    SDL_FPoint normal;
 
+    // Find collider normal
+    SDL_FPoint normalCounterClock { cos(c.Object->Rotation - (M_PI / 2)), sin(c.Object->Rotation - (M_PI / 2)) };
+    SDL_FPoint normalClock { cos(c.Object->Rotation + (M_PI / 2)), sin(c.Object->Rotation + (M_PI / 2)) };
+    SDL_FPoint impactReverse { -c.ImpactVelocity.x, -c.ImpactVelocity.y };
+
+    float angleDiffCC = VectorAngle(normalCounterClock, impactReverse);
+    float angleDiffC = VectorAngle(normalClock, impactReverse);
+
+    if (angleDiffC <= angleDiffCC) { normal = normalClock; }
+    else { normal = normalCounterClock; }
+
+    // Calculate reflect vector
+    float reflectAngle = c.Object->Rotation - VectorAngle(impactReverse, normal);
+    float bounceForce = std::hypot(c.ImpactVelocity.x, c.ImpactVelocity.y);
+
+    m_Player->Velocity =
+    {
+        cos(reflectAngle) * bounceForce,
+        sin(reflectAngle) * bounceForce
+    };
+
+    printf("bounce - ");
+    printf("reflect angle: "); printf(std::to_string(reflectAngle).c_str()); printf("\n");
+}
+
+float PlayerAirborneState::VectorAngle(SDL_FPoint a, SDL_FPoint b)
+{
+    // https://stackoverflow.com/a/16544330
+    float dot = a.x * b.x + a.y * b.y; // dot product
+    float det = a.x * b.y - a.y * b.x; // determinant
+    float angle = atan2(det, dot); // atan2(y, x) or atan2(sin, cos)
+    
+    return angle;
 }

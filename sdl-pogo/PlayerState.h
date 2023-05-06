@@ -12,13 +12,13 @@ public:
     virtual void StateTick(double deltaTime) { };
     virtual void StateExit() { };
 
-    virtual void OnCollisionEnter(GameObject* o) { };
-    virtual void OnCollision(GameObject* o) { };
-    virtual void OnCollisionExit(GameObject* o) { };
+    virtual void OnCollisionEnter(Collision c) { };
+    virtual void OnCollision(Collision c) { };
+    virtual void OnCollisionExit(Collision c) { };
 
-    virtual void OnTriggerEnter(GameObject* o) { };
-    virtual void OnTrigger(GameObject* o) { };
-    virtual void OnTriggerExit(GameObject* o) { };
+    virtual void OnTriggerEnter(Collision c) { };
+    virtual void OnTrigger(Collision c) { };
+    virtual void OnTriggerExit(Collision c) { };
 
     protected:
         PlayerObject* m_Player = 0;
@@ -45,9 +45,10 @@ public:
     virtual void StateTick(double deltaTime);
     virtual void StateExit();
 
-    virtual void OnCollision(GameObject* o);
+    virtual void OnCollision(Collision c);
 
 private:
     void Ground();
-    void Bounce();
+    void Bounce(Collision c);
+    float VectorAngle(SDL_FPoint a, SDL_FPoint b);
 };

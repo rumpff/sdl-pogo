@@ -50,36 +50,36 @@ void PlayerObject::Render(SDL_Renderer* renderer)
 
 }
 
-void PlayerObject::OnCollisionEnter(GameObject* o)
+void PlayerObject::OnCollisionEnter(Collision c)
 {
     if (m_CurrentState != 0)
-        m_CurrentState->OnCollisionEnter(o);
+        m_CurrentState->OnCollisionEnter(c);
 }
-void PlayerObject::OnCollision(GameObject* o)
+void PlayerObject::OnCollision(Collision c)
 {
     if (m_CurrentState != 0)
-        m_CurrentState->OnCollision(o);
+        m_CurrentState->OnCollision(c);
 }
-void PlayerObject::OnCollisionExit(GameObject* o)
+void PlayerObject::OnCollisionExit(Collision c)
 {
     if (m_CurrentState != 0)
-        m_CurrentState->OnCollisionExit(o);
+        m_CurrentState->OnCollisionExit(c);
 }
 
-void PlayerObject::OnTriggerEnter(GameObject* o)
+void PlayerObject::OnTriggerEnter(Collision c)
 {
     if (m_CurrentState != 0)
-        m_CurrentState->OnTriggerEnter(o);
+        m_CurrentState->OnTriggerEnter(c);
 }
-void PlayerObject::OnTrigger(GameObject* o)
+void PlayerObject::OnTrigger(Collision c)
 {
     if (m_CurrentState != 0)
-        m_CurrentState->OnTrigger(o);
+        m_CurrentState->OnTrigger(c);
 }
-void PlayerObject::OnTriggerExit(GameObject* o)
+void PlayerObject::OnTriggerExit(Collision c)
 {
     if (m_CurrentState != 0)
-        m_CurrentState->OnTriggerExit(o);
+        m_CurrentState->OnTriggerExit(c);
 }
 
 void PlayerObject::ChangeState(PlayerState* newState)

@@ -3,7 +3,21 @@
 void ObjectManager::Initialize()
 {
 	CreateObject(new PlayerObject());
-	CreateObject(new GeometryObject());
+
+	float wallSize = 500;
+	for (int i = 0; i < 4; i++)
+	{
+		GameObject* wall = CreateObject(new GeometryObject());
+		wall->ColliderLength = wallSize;
+
+		wall->Rotation = i * ((M_PI * 2) / 4);
+		wall->Position =
+		{
+			(1280 / 2) - cosf(wall->Rotation + (M_PI/2)) * (wallSize / 2),
+			(720 / 2) - sinf(wall->Rotation + (M_PI/2)) * (wallSize / 2)
+		};
+	}
+	
 }
 
 void ObjectManager::Close()
@@ -15,16 +29,19 @@ void ObjectManager::Close()
 	}
 }
 
-void ObjectManager::CreateObject(GameObject* newObject)
+GameObject* ObjectManager::CreateObject(GameObject* newObject)
 {
 	m_GameObjects.push_back(newObject);
 	newObject->OnCreate();
+
+	return newObject;
 }
 
 void ObjectManager::GameTick(double deltaTime)
 {
 	for (size_t i = 0; i < m_GameObjects.size(); i++)
 	{
+		m_GameObjects[i]->UpdatePrev();
 		m_GameObjects[i]->Tick(deltaTime);
 	}
 }
@@ -48,7 +65,6 @@ void ObjectManager::PhysicsTick(SDL_FPoint gravity, double deltaTime)
 		object->Velocity = velocity;
 
 		// Move Object
-		object->PositionPrev = object->Position;
 		object->Position.x += object->Velocity.x;
 		object->Position.y += object->Velocity.y;
 
@@ -77,10 +93,10 @@ void ObjectManager::PhysicsTick(SDL_FPoint gravity, double deltaTime)
 			if (!intersect.first)	
 			{
 				// Fallback check
-				//std::pair < SDL_FPoint, SDL_FPoint> path = { object->PositionPrev, object->Position };
-				//intersect = IntersectCheck(path, otherCollider);
+				std::pair < SDL_FPoint, SDL_FPoint> path = { object->PositionPrev, object->Position };
+				intersect = IntersectCheck(path, otherCollider);
 
-				//if (!intersect.first)
+				if (!intersect.first)
 					continue;
 			}
 
@@ -97,6 +113,12 @@ void ObjectManager::PhysicsTick(SDL_FPoint gravity, double deltaTime)
 				}
 			}
 
+
+			// Collision has occured
+			Collision collision;
+			collision.Object = otherObject;
+			collision.ImpactVelocity = object->Velocity;
+
 			object->CollidingObjects.push_back(otherObject);
 
 			// Find line end to snap object to
@@ -104,20 +126,30 @@ void ObjectManager::PhysicsTick(SDL_FPoint gravity, double deltaTime)
 			{
 				SDL_FPoint anchor;
 				std::pair < SDL_FPoint, SDL_FPoint> objectColliderLocal = object->GetColliderLocal();
+				
+				// Use projected point on the other object to see which end is closer
+				std::pair< SDL_FPoint, SDL_FPoint> colliderPrev = object->GetColliderPrev();
+				std::pair<bool, SDL_FPoint> intersectPrev = IntersectCheck(colliderPrev, otherObject->GetCollider());
 
-				float distToFirst = std::hypotf(object->Velocity.x - objectColliderLocal.first.x, object->Velocity.y - objectColliderLocal.first.y);
-				float distToSecond = std::hypotf(object->Velocity.x - objectColliderLocal.second.x, object->Velocity.y - objectColliderLocal.second.y);
+				if (intersectPrev.first)
+				{
+					printf("huh, a collision?");
+				}
 
-				if (distToSecond < distToFirst) 
-				{ 
-					anchor = objectColliderLocal.second; 
-					printf("pick second \n");
+				float distToFirst = std::hypotf(colliderPrev.first.x - intersectPrev.second.x, colliderPrev.first.y - intersectPrev.second.y);
+				float distToSecond = std::hypotf(colliderPrev.second.x - intersectPrev.second.x, colliderPrev.second.y - intersectPrev.second.y);
+
+				if (distToSecond < distToFirst)
+				{
+					anchor = objectColliderLocal.second;
+					collision.ColliderAnchor = 2;
 				}
-				else 
-				{ 
-					anchor = objectColliderLocal.first; 
-					printf("pick first \n");
+				else
+				{
+					anchor = objectColliderLocal.first;
+					collision.ColliderAnchor = 1;
 				}
+
 
 				SDL_FPoint newPos
 				{
@@ -129,16 +161,16 @@ void ObjectManager::PhysicsTick(SDL_FPoint gravity, double deltaTime)
 				object->Velocity = { 0, 0 };
 
 				if (isFirst)
-					object->OnCollisionEnter(otherObject);
+					object->OnCollisionEnter(collision);
 
-				object->OnCollision(otherObject);
+				object->OnCollision(collision);
 			}
 			else if (otherObject->PhysicsMode == Trigger)
 			{
 				if (isFirst)
-					object->OnTriggerEnter(otherObject);
+					object->OnTriggerEnter(collision);
 
-				object->OnTrigger(otherObject);
+				object->OnTrigger(collision);
 			}
 			else
 			{
@@ -152,13 +184,16 @@ void ObjectManager::PhysicsTick(SDL_FPoint gravity, double deltaTime)
 			{
 				GameObject* otherObject = collideTest[k];
 
+				Collision collision;
+				collision.Object = otherObject;
+
 				if (otherObject->PhysicsMode == Rigid)
 				{
-					object->OnCollisionExit(otherObject);
+					object->OnCollisionExit(collision);
 				}
 				else if (otherObject->PhysicsMode == Trigger)
 				{
-					object->OnTriggerExit(otherObject);
+					object->OnTriggerExit(collision);
 				}
 				else
 				{

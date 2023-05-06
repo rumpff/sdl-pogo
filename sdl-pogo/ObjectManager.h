@@ -3,10 +3,13 @@
 
 #include <vector>
 #include <sstream>
+#include <numeric>
+#include <cmath>
 
 #include "GameObject.h"
 #include "PlayerObject.h"
 #include "GeometryObject.h"
+#include "Collision.h"
 
 
 /// <summary>
@@ -24,7 +27,7 @@ public:
 	void PhysicsTick(SDL_FPoint gravity, double deltaTime);
 	void RenderObjects(SDL_Renderer* renderer);
 
-	void CreateObject(GameObject* newObject);
+	GameObject* CreateObject(GameObject* newObject);
 
 private:
 	std::vector<GameObject*> m_GameObjects;

@@ -1,6 +1,7 @@
 #pragma once
 #include "GameObject.h"
 #include "PlayerState.h"
+#include "Collision.h"
 
 #include <cmath>
 #include <sstream>
@@ -9,7 +10,7 @@ class PlayerObject :
     public GameObject
 {
 public:
-    const float JumpHeight = 0.1;
+    const float JumpHeight = 0.2;
 
     virtual void OnCreate();
     virtual void Tick(double deltaTime);
@@ -17,13 +18,13 @@ public:
 
     void ChangeState(PlayerState* newState);
 
-    virtual void OnCollisionEnter(GameObject* o);
-    virtual void OnCollision(GameObject* o);
-    virtual void OnCollisionExit(GameObject* o);
+    virtual void OnCollisionEnter(Collision c);
+    virtual void OnCollision(Collision c);
+    virtual void OnCollisionExit(Collision c);
 
-    virtual void OnTriggerEnter(GameObject* o);
-    virtual void OnTrigger(GameObject* o);
-    virtual void OnTriggerExit(GameObject* o);
+    virtual void OnTriggerEnter(Collision c);
+    virtual void OnTrigger(Collision c);
+    virtual void OnTriggerExit(Collision c);
 
 private:
     PlayerState* m_CurrentState;
