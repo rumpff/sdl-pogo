@@ -4,13 +4,13 @@ void ObjectManager::Initialize()
 {
 	CreateObject(new PlayerObject());
 
-	float wallSize = 500;
+	float wallSize = 300;
 	for (int i = 0; i < 4; i++)
 	{
 		GameObject* wall = CreateObject(new GeometryObject());
 		wall->ColliderLength = wallSize;
 
-		wall->Rotation = i * ((M_PI * 2) / 4);
+		wall->Rotation = i * ((M_PI * 2) / 4) + (M_PI / 8);
 		wall->Position =
 		{
 			(1280 / 2) - cosf(wall->Rotation + (M_PI/2)) * (wallSize / 2),
@@ -133,7 +133,7 @@ void ObjectManager::PhysicsTick(SDL_FPoint gravity, double deltaTime)
 
 				if (intersectPrev.first)
 				{
-					printf("huh, a collision?");
+					// printf("huh, a collision?");
 				}
 
 				float distToFirst = std::hypotf(colliderPrev.first.x - intersectPrev.second.x, colliderPrev.first.y - intersectPrev.second.y);

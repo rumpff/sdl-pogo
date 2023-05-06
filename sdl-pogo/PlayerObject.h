@@ -10,6 +10,7 @@ class PlayerObject :
     public GameObject
 {
 public:
+    SDL_FPoint kut = { 0,0 };
     const float JumpHeight = 0.2;
 
     virtual void OnCreate();

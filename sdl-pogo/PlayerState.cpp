@@ -129,39 +129,73 @@ void PlayerAirborneState::Ground()
 
 void PlayerAirborneState::Bounce(Collision c)
 {    
-    SDL_FPoint normal;
-
-    // Find collider normal
-    SDL_FPoint normalCounterClock { cos(c.Object->Rotation - (M_PI / 2)), sin(c.Object->Rotation - (M_PI / 2)) };
-    SDL_FPoint normalClock { cos(c.Object->Rotation + (M_PI / 2)), sin(c.Object->Rotation + (M_PI / 2)) };
-    SDL_FPoint impactReverse { -c.ImpactVelocity.x, -c.ImpactVelocity.y };
-
-    float angleDiffCC = VectorAngle(normalCounterClock, impactReverse);
-    float angleDiffC = VectorAngle(normalClock, impactReverse);
-
-    if (angleDiffC <= angleDiffCC) { normal = normalClock; }
-    else { normal = normalCounterClock; }
-
-    // Calculate reflect vector
-    float reflectAngle = c.Object->Rotation - VectorAngle(impactReverse, normal);
-    float bounceForce = std::hypot(c.ImpactVelocity.x, c.ImpactVelocity.y);
-
-    m_Player->Velocity =
-    {
-        cos(reflectAngle) * bounceForce,
-        sin(reflectAngle) * bounceForce
+    std::pair<SDL_FPoint, SDL_FPoint> colliderNormals {   
+        { cosf(c.Object->Rotation - (M_PI * 0.5)), sinf(c.Object->Rotation - (M_PI * 0.5)) },
+        { cosf(c.Object->Rotation + (M_PI * 0.5)), sinf(c.Object->Rotation + (M_PI * 0.5)) },
+    };
+    SDL_FPoint impactReversed {
+        c.ImpactVelocity.x * -1,
+        c.ImpactVelocity.y * -1
     };
 
-    printf("bounce - ");
-    printf("reflect angle: "); printf(std::to_string(reflectAngle).c_str()); printf("\n");
+    // check which normal points most towards impact vector
+    float distToFirst = std::hypotf(impactReversed.x - colliderNormals.first.x, impactReversed.y - colliderNormals.first.y);
+    float distToSecond = std::hypotf(impactReversed.x - colliderNormals.second.x, impactReversed.y - colliderNormals.second.y);
+
+    SDL_FPoint normal = (distToFirst <= distToSecond) ? colliderNormals.first : colliderNormals.second;
+
+    m_Player->kut = normal;
+
+    printf("\nrotate: ");
+    printf(std::to_string(c.Object->Rotation).c_str());
+
+    m_Player->Velocity = VectorReflect(c.ImpactVelocity, normal);
+}
+
+float PlayerAirborneState::Dot(SDL_FPoint a, SDL_FPoint b)
+{
+    return a.x * b.x + a.y * b.y;
 }
 
 float PlayerAirborneState::VectorAngle(SDL_FPoint a, SDL_FPoint b)
 {
     // https://stackoverflow.com/a/16544330
-    float dot = a.x * b.x + a.y * b.y; // dot product
     float det = a.x * b.y - a.y * b.x; // determinant
-    float angle = atan2(det, dot); // atan2(y, x) or atan2(sin, cos)
+    float angle = atan2(det, Dot(a,b)); // atan2(y, x) or atan2(sin, cos)
     
     return angle;
+}
+
+SDL_FPoint PlayerAirborneState::VectorReflect(SDL_FPoint velocity, SDL_FPoint normal)
+{
+    // https://stackoverflow.com/a/573206
+    SDL_FPoint u = VectorMultiply(normal, Dot(velocity, normal) / Dot(normal, normal));
+    SDL_FPoint w = VectorSubtract(velocity, u);
+
+    return VectorSubtract(w, u);
+}
+
+SDL_FPoint PlayerAirborneState::VectorMultiply(SDL_FPoint a, float b)
+{
+    return SDL_FPoint
+    {
+        a.x * b,
+        a.y * b
+    };
+}
+SDL_FPoint PlayerAirborneState::VectorDivide(SDL_FPoint a, SDL_FPoint b)
+{
+    return SDL_FPoint
+    {
+        a.x / b.x,
+        a.y / b.y
+    };
+}
+SDL_FPoint PlayerAirborneState::VectorSubtract(SDL_FPoint a, SDL_FPoint b)
+{
+    return SDL_FPoint
+    {
+        a.x - b.x,
+        a.y - b.y
+    };
 }
