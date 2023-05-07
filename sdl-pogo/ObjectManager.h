@@ -32,5 +32,7 @@ public:
 private:
 	std::vector<GameObject*> m_GameObjects;
 	std::pair<bool, SDL_FPoint> IntersectCheck(std::pair<SDL_FPoint, SDL_FPoint> lineA, std::pair<SDL_FPoint, SDL_FPoint> lineB);
+
+	float Lerp(float a, float b, float f);
 };
 

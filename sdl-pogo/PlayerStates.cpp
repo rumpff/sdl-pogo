@@ -134,6 +134,7 @@ void PlayerAirborneState::StateEnter(PlayerObject* player)
     printf("im air");
 
     m_Player->HandlePhysics = true;
+    m_Player->AngularVelocity = 0;
 }
 
 void PlayerAirborneState::StateTick(double deltaTime)
@@ -143,12 +144,15 @@ void PlayerAirborneState::StateTick(double deltaTime)
 
     if (currentKeyStates[SDL_SCANCODE_LEFT])
     {
-        m_Player->Rotation -= 10 * deltaTime;
+        m_Player->AngularVelocity -= 50 * deltaTime;
     }
     else if (currentKeyStates[SDL_SCANCODE_RIGHT])
     {
-        m_Player->Rotation += 10 * deltaTime;
+        m_Player->AngularVelocity += 50 * deltaTime;
     }
+
+    printf(std::to_string(m_Player->AngularVelocity).c_str());
+    printf("\n");
 }
 
 void PlayerAirborneState::StateExit()

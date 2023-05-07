@@ -56,17 +56,23 @@ void ObjectManager::PhysicsTick(SDL_FPoint gravity, double deltaTime)
 			continue;
 
 		SDL_FPoint velocity = object->Velocity;
+		float angleVelocity = object->AngularVelocity;
 
 		// Modify Velocities
 		velocity.x += gravity.x * deltaTime;
 		velocity.y += gravity.y * deltaTime;
+		
+		angleVelocity = Lerp(angleVelocity, 0, 3 * deltaTime);
 
 		// Apply Velocities
 		object->Velocity = velocity;
+		object->AngularVelocity = angleVelocity;
 
 		// Move Object
 		object->Position.x += object->Velocity.x * deltaTime;
 		object->Position.y += object->Velocity.y * deltaTime;
+
+		object->Rotation += object->AngularVelocity * deltaTime;
 
 		std::vector<GameObject*> collideTest = object->CollidingObjects;
 		object->CollidingObjects.clear();
@@ -237,4 +243,10 @@ std::pair<bool, SDL_FPoint> ObjectManager::IntersectCheck(std::pair<SDL_FPoint, 
 	output.second.y = y1 + (ua * (y2 - y1));
 
 	return output;
+}
+
+float ObjectManager::Lerp(float a, float b, float f)
+{
+	// https://stackoverflow.com/a/4353537
+	return a * (1.0 - f) + (b * f);
 }
