@@ -1,6 +1,6 @@
 #pragma once
 #include "GameObject.h"
-#include "PlayerState.h"
+#include "PlayerStates.h"
 #include "Collision.h"
 
 #include <cmath>
@@ -10,7 +10,6 @@ class PlayerObject :
     public GameObject
 {
 public:
-    SDL_FPoint kut = { 0,0 };
     const float JumpHeight = 800;
 
     virtual void OnCreate();

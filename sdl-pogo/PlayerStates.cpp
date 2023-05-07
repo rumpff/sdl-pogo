@@ -1,4 +1,4 @@
-#include "PlayerState.h"
+#include "PlayerStates.h"
 #include "PlayerObject.h"
 
 void PlayerState::StateEnter(PlayerObject* player)
@@ -9,6 +9,10 @@ void PlayerState::StateEnter(PlayerObject* player)
 
 // --- Grounded state --- //
 
+PlayerGroundedState::PlayerGroundedState(SDL_FPoint groundNormal)
+{
+    m_GroundNormal = groundNormal;
+}
 
 void PlayerGroundedState::StateEnter(PlayerObject* player)
 {
@@ -32,18 +36,13 @@ void PlayerGroundedState::StateTick(double deltaTime)
         return;
     }
 
-    if (currentKeyStates[SDL_SCANCODE_DOWN])
-    {
-        m_Player->Rotation = -M_PI / 2;
-    }
-
     if (currentKeyStates[SDL_SCANCODE_LEFT])
     {
-        Rotate(-10 * deltaTime);
+        Rotate(-SwivelSpeed * deltaTime);
     }
     else if (currentKeyStates[SDL_SCANCODE_RIGHT])
     {
-        Rotate(10 * deltaTime);
+        Rotate(SwivelSpeed * deltaTime);
     }
 
     // Snap player to anchor
@@ -59,9 +58,25 @@ void PlayerGroundedState::StateExit()
     //hm
 }
 
-void PlayerGroundedState::Rotate(float amount)
+bool PlayerGroundedState::Rotate(float amount)
 {
-    m_Player->Rotation += amount;
+    // Check if rotation is allowed
+    float newAngle = m_Player->Rotation + amount;
+    float normalAngle = atan2(m_GroundNormal.y, m_GroundNormal.x);
+
+    float newDifference = fabsf(AngleDifference(newAngle, normalAngle));
+
+    if (newDifference >= MaxSwivelAngle)
+    {
+        // allow pogo to move back, but not further
+        float currentDifference = fabsf(AngleDifference(m_Player->Rotation, normalAngle));
+
+        if (newDifference >= currentDifference)
+            return false;
+    }
+
+    m_Player->Rotation = newAngle;
+    return true;
 }
 
 void PlayerGroundedState::Jump()
@@ -72,6 +87,20 @@ void PlayerGroundedState::Jump()
         sinf(m_Player->Rotation) * m_Player->JumpHeight
     };
     m_Player->ChangeState(new PlayerAirborneState());
+}
+
+float PlayerGroundedState::AngleDifference(float target, float source)
+{
+    // https://stackoverflow.com/a/7869457
+
+    float angle = target - source;
+    angle = Mod((angle + M_PI), M_PI*2) - M_PI;
+    return angle;
+}
+
+float PlayerGroundedState::Mod(float a, float n)
+{
+    return a - floor(a / n) * n;
 }
 
 
@@ -110,30 +139,37 @@ void PlayerAirborneState::StateExit()
 void PlayerAirborneState::OnCollision(Collision c)
 {
     if(c.Object->Tag == "geometry")
-    {
+    {      
         if (c.ColliderAnchor == 1)
         {
+            // Collision with top of pogo
             Bounce(c);
         }
         if (c.ColliderAnchor == 2)
         {
-            Ground();
+            // Collision with bottom of pogo
+            Ground(c);
         }
     }
 }
 
-void PlayerAirborneState::Ground()
+void PlayerAirborneState::Ground(Collision c)
 {
-    m_Player->ChangeState(new PlayerGroundedState());
+    m_Player->ChangeState(new PlayerGroundedState(CollisionNormal(c)));
 }
 
 void PlayerAirborneState::Bounce(Collision c)
 {    
-    std::pair<SDL_FPoint, SDL_FPoint> colliderNormals {   
-        { cosf(c.Object->Rotation - (M_PI * 0.5)), sinf(c.Object->Rotation - (M_PI * 0.5)) },
-        { cosf(c.Object->Rotation + (M_PI * 0.5)), sinf(c.Object->Rotation + (M_PI * 0.5)) },
+    m_Player->Velocity = VectorBounce(c.ImpactVelocity, CollisionNormal(c), 0.6f);
+}
+
+SDL_FPoint PlayerAirborneState::CollisionNormal(Collision c)
+{
+    std::pair<SDL_FPoint, SDL_FPoint> colliderNormals{
+    { cosf(c.Object->Rotation - (M_PI * 0.5)), sinf(c.Object->Rotation - (M_PI * 0.5)) },
+    { cosf(c.Object->Rotation + (M_PI * 0.5)), sinf(c.Object->Rotation + (M_PI * 0.5)) },
     };
-    SDL_FPoint impactReversed {
+    SDL_FPoint impactReversed{
         c.ImpactVelocity.x * -1,
         c.ImpactVelocity.y * -1
     };
@@ -142,28 +178,13 @@ void PlayerAirborneState::Bounce(Collision c)
     float distToFirst = std::hypotf(impactReversed.x - colliderNormals.first.x, impactReversed.y - colliderNormals.first.y);
     float distToSecond = std::hypotf(impactReversed.x - colliderNormals.second.x, impactReversed.y - colliderNormals.second.y);
 
-    SDL_FPoint normal = (distToFirst <= distToSecond) ? colliderNormals.first : colliderNormals.second;
-
-    m_Player->kut = normal;
-
-    printf("\nrotate: ");
-    printf(std::to_string(c.Object->Rotation).c_str());
-
-    m_Player->Velocity = VectorBounce(c.ImpactVelocity, normal, 0.6f);
+    return (distToFirst <= distToSecond) ? colliderNormals.first : colliderNormals.second;
 }
 
 float PlayerAirborneState::Dot(SDL_FPoint a, SDL_FPoint b)
 {
-    return a.x * b.x + a.y * b.y;
-}
-
-float PlayerAirborneState::VectorAngle(SDL_FPoint a, SDL_FPoint b)
-{
     // https://stackoverflow.com/a/16544330
-    float det = a.x * b.y - a.y * b.x; // determinant
-    float angle = atan2(det, Dot(a,b)); // atan2(y, x) or atan2(sin, cos)
-    
-    return angle;
+    return a.x * b.x + a.y * b.y;
 }
 
 SDL_FPoint PlayerAirborneState::VectorBounce(SDL_FPoint velocity, SDL_FPoint normal, float friction)

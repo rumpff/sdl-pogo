@@ -47,11 +47,6 @@ void PlayerObject::Render(SDL_Renderer* renderer)
     SDL_SetRenderDrawColor(renderer, 0xFF, 0x00, 0x00, 0xFF);
     SDL_RenderDrawLineF(renderer, collider.first.x, collider.first.y, collider.second.x, collider.second.y);
     SDL_RenderDrawLineF(renderer, handleBar.first.x, handleBar.first.y, handleBar.second.x, handleBar.second.y);
-
-    SDL_SetRenderDrawColor(renderer, 0x00, 0x00, 0xFF, 0xFF);
-
-    SDL_RenderDrawLineF(renderer, Position.x, Position.y, Position.x + (kut.x * 50), Position.y + (kut.y * 50));
-
 }
 
 void PlayerObject::OnCollisionEnter(Collision c)
