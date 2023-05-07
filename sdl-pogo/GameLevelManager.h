@@ -18,6 +18,7 @@ public:
 	virtual void SpawnObjects(LevelData data);
 
 	float TimeScale;
+	float LevelTime;
 
 public:
 	PlayerObject* m_Player;

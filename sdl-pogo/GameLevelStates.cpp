@@ -23,10 +23,13 @@ void GameState::StateEnter(GameLevelManager* m)
     GameLevelState::StateEnter(m);
 
     m_Level->TimeScale = 1;
+    m_Level->LevelTime = 0;
 }
 
 void GameState::StateTick(double deltaTime)
 {
+    m_Level->LevelTime += deltaTime;
+
 	m_Level->GetObjectManager()->GameTick(deltaTime * m_Level->TimeScale);
 	m_Level->GetObjectManager()->PhysicsTick(m_Level->Gravity, deltaTime * m_Level->TimeScale);
 
@@ -43,6 +46,12 @@ void GameState::StateTick(double deltaTime)
         m_Level->ReLoad();
         return;
     }
+}
+
+void GameState::StateExit()
+{
+    printf("time: ");
+    printf(std::to_string(m_Level->LevelTime).c_str());
 }
 
 

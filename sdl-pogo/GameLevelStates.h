@@ -27,7 +27,7 @@ class GameState : public GameLevelState
 public:
     virtual void StateEnter(GameLevelManager* m);
     virtual void StateTick(double deltaTime);
-    //virtual void StateExit();
+    virtual void StateExit();
 };
 
 class EndGameState : public GameLevelState
