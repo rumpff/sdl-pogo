@@ -10,7 +10,7 @@ void ObjectManager::Initialize()
 		GameObject* wall = CreateObject(new GeometryObject());
 		wall->ColliderLength = wallSize;
 
-		wall->Rotation = i * ((M_PI * 2) / 4) + (M_PI / 8);
+		wall->Rotation = i * ((M_PI * 2) / 4);//+ (M_PI / 8);
 		wall->Position =
 		{
 			(1280 / 2) - cosf(wall->Rotation - (M_PI/2)) * (wallSize / 2),

@@ -6,6 +6,47 @@ void PlayerState::StateEnter(PlayerObject* player)
     m_Player = player;
 }
 
+float PlayerState::Dot(SDL_FPoint a, SDL_FPoint b)
+{
+    return a.x * b.x + a.y * b.y;
+}
+float PlayerState::Mod(float a, float n)
+{
+    return a - floor(a / n) * n;
+}
+float PlayerState::AngleDifference(float target, float source)
+{
+    // https://stackoverflow.com/a/7869457
+
+    float angle = target - source;
+    angle = Mod((angle + M_PI), M_PI * 2) - M_PI;
+    return angle;
+}
+SDL_FPoint PlayerState::VectorMultiply(SDL_FPoint a, float b)
+{
+    return SDL_FPoint
+    {
+        a.x * b,
+        a.y * b
+    };
+}
+SDL_FPoint PlayerState::VectorDivide(SDL_FPoint a, SDL_FPoint b)
+{
+    return SDL_FPoint
+    {
+        a.x / b.x,
+        a.y / b.y
+    };
+}
+SDL_FPoint PlayerState::VectorSubtract(SDL_FPoint a, SDL_FPoint b)
+{
+    return SDL_FPoint
+    {
+        a.x - b.x,
+        a.y - b.y
+    };
+}
+
 
 // --- Grounded state --- //
 
@@ -109,20 +150,6 @@ void PlayerGroundedState::Jump()
     m_Player->ChangeState(new PlayerAirborneState());
 }
 
-float PlayerGroundedState::AngleDifference(float target, float source)
-{
-    // https://stackoverflow.com/a/7869457
-
-    float angle = target - source;
-    angle = Mod((angle + M_PI), M_PI*2) - M_PI;
-    return angle;
-}
-
-float PlayerGroundedState::Mod(float a, float n)
-{
-    return a - floor(a / n) * n;
-}
-
 
 // --- Airborne state --- //
 
@@ -150,9 +177,6 @@ void PlayerAirborneState::StateTick(double deltaTime)
     {
         m_Player->AngularVelocity += 50 * deltaTime;
     }
-
-    printf(std::to_string(m_Player->AngularVelocity).c_str());
-    printf("\n");
 }
 
 void PlayerAirborneState::StateExit()
@@ -185,6 +209,13 @@ void PlayerAirborneState::Ground(Collision c)
 void PlayerAirborneState::Bounce(Collision c)
 {    
     m_Player->Velocity = VectorBounce(c.ImpactVelocity, CollisionNormal(c), 0.6f);
+
+    // Bounce rotate
+    float normalAngle = atan2(CollisionNormal(c).y, CollisionNormal(c).x);
+    float angleVelocity = AngleDifference(m_Player->Rotation, normalAngle - M_PI);
+    angleVelocity *= BounceRotate;
+    
+    m_Player->AngularVelocity = angleVelocity;
 }
 
 SDL_FPoint PlayerAirborneState::CollisionNormal(Collision c)
@@ -205,12 +236,6 @@ SDL_FPoint PlayerAirborneState::CollisionNormal(Collision c)
     return (distToFirst <= distToSecond) ? colliderNormals.first : colliderNormals.second;
 }
 
-float PlayerAirborneState::Dot(SDL_FPoint a, SDL_FPoint b)
-{
-    // https://stackoverflow.com/a/16544330
-    return a.x * b.x + a.y * b.y;
-}
-
 SDL_FPoint PlayerAirborneState::VectorBounce(SDL_FPoint velocity, SDL_FPoint normal, float friction)
 {
     // https://stackoverflow.com/a/573206
@@ -218,29 +243,4 @@ SDL_FPoint PlayerAirborneState::VectorBounce(SDL_FPoint velocity, SDL_FPoint nor
     SDL_FPoint w = VectorSubtract(velocity, u);
 
     return VectorSubtract(VectorMultiply(w, friction), VectorMultiply(u, 1));
-}
-
-SDL_FPoint PlayerAirborneState::VectorMultiply(SDL_FPoint a, float b)
-{
-    return SDL_FPoint
-    {
-        a.x * b,
-        a.y * b
-    };
-}
-SDL_FPoint PlayerAirborneState::VectorDivide(SDL_FPoint a, SDL_FPoint b)
-{
-    return SDL_FPoint
-    {
-        a.x / b.x,
-        a.y / b.y
-    };
-}
-SDL_FPoint PlayerAirborneState::VectorSubtract(SDL_FPoint a, SDL_FPoint b)
-{
-    return SDL_FPoint
-    {
-        a.x - b.x,
-        a.y - b.y
-    };
 }

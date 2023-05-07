@@ -20,8 +20,17 @@ public:
     virtual void OnTrigger(Collision c) { };
     virtual void OnTriggerExit(Collision c) { };
 
-    protected:
-        PlayerObject* m_Player = 0;
+protected:
+    PlayerObject* m_Player = 0;
+
+    float Dot(SDL_FPoint a, SDL_FPoint b);
+    float Mod(float a, float n);
+
+    float AngleDifference(float target, float source);
+
+    SDL_FPoint VectorMultiply(SDL_FPoint a, float b);
+    SDL_FPoint VectorDivide(SDL_FPoint a, SDL_FPoint b);
+    SDL_FPoint VectorSubtract(SDL_FPoint a, SDL_FPoint b);
 };
 
 class PlayerGroundedState : public PlayerState
@@ -47,9 +56,6 @@ private:
     void Jump();
 
     bool Rotate(float amount);
-
-    float AngleDifference(float target, float source);
-    float Mod(float a, float n);
 };
 
 class PlayerAirborneState : public PlayerState
@@ -62,14 +68,11 @@ public:
     virtual void OnCollision(Collision c);
 
 private:
+    const float BounceRotate = 12;
+
     void Ground(Collision c);
     void Bounce(Collision c);
     
     SDL_FPoint CollisionNormal(Collision c);
-
-    float Dot(SDL_FPoint a, SDL_FPoint b);
     SDL_FPoint VectorBounce(SDL_FPoint velocity, SDL_FPoint normal, float friction);
-    SDL_FPoint VectorMultiply(SDL_FPoint a, float b);
-    SDL_FPoint VectorDivide(SDL_FPoint a, SDL_FPoint b);
-    SDL_FPoint VectorSubtract(SDL_FPoint a, SDL_FPoint b);
 };
