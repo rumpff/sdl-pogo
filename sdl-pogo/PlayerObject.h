@@ -12,11 +12,14 @@ class PlayerObject :
 public:
     const float JumpHeight = 800;
 
+    float JumpCharge = 0;
+
     virtual void OnCreate();
     virtual void Tick(double deltaTime);
     virtual void Render(SDL_Renderer* renderer);
 
     void ChangeState(PlayerState* newState);
+    void SetVisualCharge(float charge) { m_VisualCharge = charge; }
 
     virtual void OnCollisionEnter(Collision c);
     virtual void OnCollision(Collision c);
@@ -28,6 +31,6 @@ public:
 
 private:
     PlayerState* m_CurrentState;
-
+    float m_VisualCharge = 0;
 };
 

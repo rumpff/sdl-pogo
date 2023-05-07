@@ -35,12 +35,18 @@ public:
 private:
     const float MaxSwivelAngle = M_PI / 3;
     const float SwivelSpeed = 6;
+    const float FullChargeDuration = 0.35f;
+    const float DeChargeDuration = 0.75;
+    const float ChargeThreshold = 0.2;
 
+    float m_Charge = 0;
     SDL_FPoint m_GroundNormal{ 0, 1 };
     SDL_FPoint m_Anchor = { 0, 0 };
 
-    bool Rotate(float amount);
+    void Charge(float amount);
     void Jump();
+
+    bool Rotate(float amount);
 
     float AngleDifference(float target, float source);
     float Mod(float a, float n);

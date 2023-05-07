@@ -30,10 +30,22 @@ void PlayerGroundedState::StateTick(double deltaTime)
     // Check input (this could be cleaner?)
     const Uint8* currentKeyStates = SDL_GetKeyboardState(NULL);
 
-    if (currentKeyStates[SDL_SCANCODE_UP])
+    if (currentKeyStates[SDL_SCANCODE_LSHIFT])
     {
-        Jump();
-        return;
+        Charge(deltaTime / FullChargeDuration);
+    }
+    else
+    {
+        if (m_Charge < ChargeThreshold)
+        {
+            // decharge jump
+            Charge(-deltaTime / DeChargeDuration);
+        }
+        else 
+        {
+            Jump();
+            return;
+        }
     }
 
     if (currentKeyStates[SDL_SCANCODE_LEFT])
@@ -55,7 +67,7 @@ void PlayerGroundedState::StateTick(double deltaTime)
 
 void PlayerGroundedState::StateExit()
 {
-    //hm
+    m_Player->SetVisualCharge(0);
 }
 
 bool PlayerGroundedState::Rotate(float amount)
@@ -79,12 +91,20 @@ bool PlayerGroundedState::Rotate(float amount)
     return true;
 }
 
+void PlayerGroundedState::Charge(float amount)
+{
+    m_Charge = SDL_clamp(m_Charge + amount, 0, 1);
+    m_Player->SetVisualCharge(m_Charge);
+}
+
 void PlayerGroundedState::Jump()
 {
+    float jumpHeight = m_Player->JumpHeight * m_Charge;
+
     m_Player->Velocity =
     {
-        cosf(m_Player->Rotation) * m_Player->JumpHeight,
-        sinf(m_Player->Rotation) * m_Player->JumpHeight
+        cosf(m_Player->Rotation) * jumpHeight,
+        sinf(m_Player->Rotation) * jumpHeight
     };
     m_Player->ChangeState(new PlayerAirborneState());
 }

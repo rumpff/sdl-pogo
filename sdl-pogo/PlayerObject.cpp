@@ -29,23 +29,29 @@ void PlayerObject::Render(SDL_Renderer* renderer)
 
     std::pair < SDL_FPoint, SDL_FPoint> collider = GetCollider();
 
+    SDL_FPoint handleBarLocation =
+    {
+        cosf(Rotation) * (ColliderLength/2 * (1 - m_VisualCharge)) + Position.x,
+        sinf(Rotation) * (ColliderLength/2 * (1 - m_VisualCharge)) + Position.y
+    };
+
     float barSize = 15;
 
     std::pair< SDL_FPoint, SDL_FPoint> handleBar
     {
         {
-            (cosf(Rotation + (M_PI / 2.0f)) * barSize) + collider.first.x,
-            (sinf(Rotation + (M_PI / 2.0f)) * barSize) + collider.first.y
+            (cosf(Rotation + (M_PI / 2.0f)) * barSize) + handleBarLocation.x,
+            (sinf(Rotation + (M_PI / 2.0f)) * barSize) + handleBarLocation.y
         },
 
         {
-            (cosf(Rotation - (M_PI / 2.0f)) * barSize) + collider.first.x,
-            (sinf(Rotation - (M_PI / 2.0f)) * barSize) + collider.first.y
+            (cosf(Rotation - (M_PI / 2.0f)) * barSize) + handleBarLocation.x,
+            (sinf(Rotation - (M_PI / 2.0f)) * barSize) + handleBarLocation.y
         }
     };
 
     SDL_SetRenderDrawColor(renderer, 0xFF, 0x00, 0x00, 0xFF);
-    SDL_RenderDrawLineF(renderer, collider.first.x, collider.first.y, collider.second.x, collider.second.y);
+    SDL_RenderDrawLineF(renderer, handleBarLocation.x, handleBarLocation.y, collider.second.x, collider.second.y);
     SDL_RenderDrawLineF(renderer, handleBar.first.x, handleBar.first.y, handleBar.second.x, handleBar.second.y);
 }
 
