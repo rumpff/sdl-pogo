@@ -18,4 +18,11 @@ void GameLevelManager::Tick(double deltaTime)
 {
 	m_ObjectManager->GameTick(deltaTime);
 	m_ObjectManager->PhysicsTick(Gravity, deltaTime);
+
+	const Uint8* currentKeyStates = SDL_GetKeyboardState(NULL);
+
+	if (currentKeyStates[SDL_SCANCODE_R])
+	{
+		ReLoad();
+	}
 }

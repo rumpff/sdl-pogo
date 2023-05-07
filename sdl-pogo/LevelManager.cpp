@@ -13,6 +13,13 @@ void LevelManager::Close()
 	// de mazzel
 }
 
+void LevelManager::ReLoad()
+{
+	printf("reeeeloading!");
+	m_ObjectManager->DestroyAll();
+	SpawnObjects(m_LevelData);
+}
+
 void LevelManager::Tick(double deltaTime)
 {
 	// tick tock 

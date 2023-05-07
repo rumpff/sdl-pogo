@@ -1,6 +1,8 @@
 #pragma once
 #include "Manager.h"
 
+#include <SDL.h>
+
 #include "LevelData.h"
 #include "ObjectManager.h"
 
@@ -15,6 +17,7 @@ public:
 
 	virtual void Initialize();
 	virtual void Close();
+	virtual void ReLoad();
 	virtual void Tick(double deltaTime);
 	virtual void Render(SDL_Renderer* renderer);
 
