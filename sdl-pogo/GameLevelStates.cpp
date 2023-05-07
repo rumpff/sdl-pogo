@@ -43,22 +43,18 @@ void GameState::StateTick(double deltaTime)
 
     if (m_Level->GetPlayer()->Dead)
     {
-        m_Level->ReLoad();
+        m_Level->ChangeState(new GameOverState());
         return;
     }
 }
-
-void GameState::StateExit()
-{
-    printf("time: ");
-    printf(std::to_string(m_Level->LevelTime).c_str());
-}
-
 
 
 void EndGameState::StateEnter(GameLevelManager* m)
 {
     GameLevelState::StateEnter(m);
+
+    printf("time: ");
+    printf(std::to_string(m_Level->LevelTime).c_str());
 
     m->GetPlayer()->ChangeState(new PlayerLimpState());
 
@@ -74,5 +70,31 @@ void EndGameState::StateTick(double deltaTime)
     {
         m_Level->TimeScale *= (1 - deltaTime * 2);
         SDL_clamp(m_Level->TimeScale, 0.05, 1);
+    }
+}
+
+
+
+void GameOverState::StateEnter(GameLevelManager* m)
+{
+    GameLevelState::StateEnter(m);
+
+    m->GetPlayer()->ChangeState(new PlayerLimpState());
+    m_Level->TimeScale = 1;
+}
+
+void GameOverState::StateTick(double deltaTime)
+{
+    m_Level->GetObjectManager()->GameTick(deltaTime * m_Level->TimeScale);
+    m_Level->GetObjectManager()->PhysicsTick(m_Level->Gravity, deltaTime * m_Level->TimeScale);
+
+    if (m_Level->TimeScale > 0.05)
+    {
+        m_Level->TimeScale *= (1 - deltaTime * 2);
+        SDL_clamp(m_Level->TimeScale, 0.05, 1);
+    }
+    else
+    {
+        m_Level->ReLoad();
     }
 }

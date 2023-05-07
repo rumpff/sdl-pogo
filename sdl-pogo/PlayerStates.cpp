@@ -196,6 +196,11 @@ void PlayerAirborneState::OnCollision(Collision c)
             Ground(c);
         }
         break;
+
+    case GeometryHazard:
+        Bounce(c);
+        m_Player->Dead = true;
+        break;
     }
 }
 
@@ -267,7 +272,7 @@ void PlayerLimpState::OnCollision(Collision c)
 {
     switch (c.Object->Type)
     {
-    case GeometryNormal:
+    case GeometryNormal: case GeometryHazard:
         Bounce(c);
         break;
     }

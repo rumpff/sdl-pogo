@@ -10,6 +10,7 @@
 
 #include "PlayerObject.h"
 #include "GeometryObject.h"
+#include "HazardGeometryObject.h"
 #include "FinishObject.h"
 
 #include "Collision.h"

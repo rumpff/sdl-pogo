@@ -64,6 +64,9 @@ void GameManager::Initialize()
 
 			dummyWall.Type = LevelFinish;
 		}
+
+		if (i == 1)
+			dummyWall.Type = GeometryHazard;
 			
 
 		dummyWall.ColliderLength = wallSize;
