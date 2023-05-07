@@ -49,10 +49,12 @@ void GameManager::Initialize()
 	{
 		LevelObject dummyWall;
 		dummyWall.Type = GeometryNormal;
+		if (i == 3)
+			dummyWall.Type = LevelFinish;
 
 		dummyWall.ColliderLength = wallSize;
 
-		dummyWall.InitialRotation = i * ((M_PI * 2) / 4);//+ (M_PI / 8);
+		dummyWall.InitialRotation = i * ((M_PI * 2) / 4) + (M_PI / 8);
 		dummyWall.InitialPosition =
 		{
 			(1280 / 2) - cosf(dummyWall.InitialRotation - (M_PI / 2)) * (wallSize / 2),

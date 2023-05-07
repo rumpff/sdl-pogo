@@ -66,6 +66,7 @@ public:
     virtual void StateExit();
 
     virtual void OnCollision(Collision c);
+    virtual void OnTriggerEnter(Collision c);
 
 private:
     const float BounceRotate = 12;

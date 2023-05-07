@@ -7,6 +7,7 @@
 #include <SDL.h>
 
 #include "Collision.h"
+#include "LevelData.h"
 
 enum CollisionMode
 {
@@ -19,7 +20,7 @@ enum CollisionMode
 class GameObject
 {
 public:
-	std::string Tag = "none";
+	ObjectType Type = Undefined;
 	bool HandlePhysics = false;
 	CollisionMode PhysicsMode = Passthrough;
 	std::vector<GameObject*> CollidingObjects;

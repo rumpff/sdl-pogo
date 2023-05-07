@@ -50,6 +50,10 @@ void LevelManager::SpawnObjects(LevelData data)
 			gObject = new PlayerObject();
 			break;
 
+		case LevelFinish:
+			gObject = new FinishObject();
+			break;
+
 		case GeometryNormal:
 			gObject = new GeometryObject();
 			break;

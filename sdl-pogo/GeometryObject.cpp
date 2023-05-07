@@ -1,10 +1,8 @@
 #include "GeometryObject.h"
 
-
-
 void GeometryObject::OnCreate()
 {
-    Tag = "geometry";
+    Type = GeometryNormal;
     HandlePhysics = false;
     PhysicsMode = Rigid;
 }

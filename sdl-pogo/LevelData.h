@@ -7,6 +7,7 @@
 
 enum ObjectType
 {
+	Undefined = -1,
 	Player,
 	LevelFinish,
 	GeometryNormal

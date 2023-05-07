@@ -62,8 +62,6 @@ void PlayerGroundedState::StateEnter(PlayerObject* player)
     m_Player->HandlePhysics = false;
 
     m_Anchor = m_Player->GetCollider().second;
-
-    printf("im ground");
 }
 
 void PlayerGroundedState::StateTick(double deltaTime)
@@ -158,8 +156,6 @@ void PlayerAirborneState::StateEnter(PlayerObject* player)
 {
     PlayerState::StateEnter(player);
 
-    printf("im air");
-
     m_Player->HandlePhysics = true;
     m_Player->AngularVelocity = 0;
 }
@@ -186,8 +182,9 @@ void PlayerAirborneState::StateExit()
 
 void PlayerAirborneState::OnCollision(Collision c)
 {
-    if(c.Object->Tag == "geometry")
+    switch(c.Object->Type)
     {      
+    case GeometryNormal:
         if (c.ColliderAnchor == 1)
         {
             // Collision with top of pogo
@@ -198,6 +195,17 @@ void PlayerAirborneState::OnCollision(Collision c)
             // Collision with bottom of pogo
             Ground(c);
         }
+        break;
+    }
+}
+
+void PlayerAirborneState::OnTriggerEnter(Collision c)
+{
+    switch (c.Object->Type)
+    {
+    case LevelFinish:
+        printf("congratulation!");
+        break;
     }
 }
 

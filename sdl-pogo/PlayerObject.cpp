@@ -3,7 +3,7 @@
 // PlayerObject
 void PlayerObject::OnCreate()
 {
-    Tag = "player";
+    Type = Player;
     HandlePhysics = true;
     Velocity = { 0.0f, -0.0f };
     m_ColliderLength = 50.0f;

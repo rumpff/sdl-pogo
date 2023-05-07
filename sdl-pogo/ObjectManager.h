@@ -7,8 +7,11 @@
 #include <cmath>
 
 #include "GameObject.h"
+
 #include "PlayerObject.h"
 #include "GeometryObject.h"
+#include "FinishObject.h"
+
 #include "Collision.h"
 
 
