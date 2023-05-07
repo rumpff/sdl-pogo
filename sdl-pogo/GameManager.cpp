@@ -50,7 +50,21 @@ void GameManager::Initialize()
 		LevelObject dummyWall;
 		dummyWall.Type = GeometryNormal;
 		if (i == 3)
+		{
+			dummyWall.ColliderLength = wallSize;
+
+			dummyWall.InitialRotation = i * ((M_PI * 2) / 4) + (M_PI / 8);
+			dummyWall.InitialPosition =
+			{
+				(1280 / 2) - cosf(dummyWall.InitialRotation - (M_PI / 2)) * (wallSize / 1.5f),
+				(720 / 2) - sinf(dummyWall.InitialRotation - (M_PI / 2)) * (wallSize / 1.5f)
+			};
+
+			dummyData.Objects.push_back(dummyWall);
+
 			dummyWall.Type = LevelFinish;
+		}
+			
 
 		dummyWall.ColliderLength = wallSize;
 

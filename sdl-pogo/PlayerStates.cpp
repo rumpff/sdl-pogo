@@ -214,7 +214,7 @@ void PlayerAirborneState::Ground(Collision c)
     m_Player->ChangeState(new PlayerGroundedState(CollisionNormal(c)));
 }
 
-void PlayerAirborneState::Bounce(Collision c)
+void PlayerState::Bounce(Collision c)
 {    
     m_Player->Velocity = VectorBounce(c.ImpactVelocity, CollisionNormal(c), 0.6f);
 
@@ -226,7 +226,7 @@ void PlayerAirborneState::Bounce(Collision c)
     m_Player->AngularVelocity = angleVelocity;
 }
 
-SDL_FPoint PlayerAirborneState::CollisionNormal(Collision c)
+SDL_FPoint PlayerState::CollisionNormal(Collision c)
 {
     std::pair<SDL_FPoint, SDL_FPoint> colliderNormals{
     { cosf(c.Object->Rotation - (M_PI * 0.5)), sinf(c.Object->Rotation - (M_PI * 0.5)) },
@@ -244,7 +244,7 @@ SDL_FPoint PlayerAirborneState::CollisionNormal(Collision c)
     return (distToFirst <= distToSecond) ? colliderNormals.first : colliderNormals.second;
 }
 
-SDL_FPoint PlayerAirborneState::VectorBounce(SDL_FPoint velocity, SDL_FPoint normal, float friction)
+SDL_FPoint PlayerState::VectorBounce(SDL_FPoint velocity, SDL_FPoint normal, float friction)
 {
     // https://stackoverflow.com/a/573206
     SDL_FPoint u = VectorMultiply(normal, Dot(velocity, normal) / Dot(normal, normal));
@@ -261,4 +261,14 @@ void PlayerLimpState::StateEnter(PlayerObject* player)
     PlayerState::StateEnter(player);
 
     m_Player->HandlePhysics = true;
+}
+
+void PlayerLimpState::OnCollision(Collision c)
+{
+    switch (c.Object->Type)
+    {
+    case GeometryNormal:
+        Bounce(c);
+        break;
+    }
 }

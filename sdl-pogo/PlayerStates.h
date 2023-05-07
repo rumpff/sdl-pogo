@@ -20,6 +20,11 @@ public:
     virtual void OnTrigger(Collision c) { };
     virtual void OnTriggerExit(Collision c) { };
 
+    const float BounceRotate = 12;
+    void Bounce(Collision c);
+    SDL_FPoint VectorBounce(SDL_FPoint velocity, SDL_FPoint normal, float friction);
+    SDL_FPoint CollisionNormal(Collision c);
+
 protected:
     PlayerObject* m_Player = 0;
 
@@ -69,17 +74,13 @@ public:
     virtual void OnTriggerEnter(Collision c);
 
 private:
-    const float BounceRotate = 12;
-
     void Ground(Collision c);
-    void Bounce(Collision c);
-    
-    SDL_FPoint CollisionNormal(Collision c);
-    SDL_FPoint VectorBounce(SDL_FPoint velocity, SDL_FPoint normal, float friction);
 };
 
 class PlayerLimpState : public PlayerState
 {
 public:
     virtual void StateEnter(PlayerObject* player);
+
+    virtual void OnCollision(Collision c);
 };

@@ -40,7 +40,8 @@ void GameState::StateTick(double deltaTime)
 
     if (m_Level->GetPlayer()->Dead)
     {
-
+        m_Level->ReLoad();
+        return;
     }
 }
 
