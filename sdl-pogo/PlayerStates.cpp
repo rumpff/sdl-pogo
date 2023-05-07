@@ -204,7 +204,7 @@ void PlayerAirborneState::OnTriggerEnter(Collision c)
     switch (c.Object->Type)
     {
     case LevelFinish:
-        printf("congratulation!");
+        m_Player->Finished = true;
         break;
     }
 }
@@ -251,4 +251,14 @@ SDL_FPoint PlayerAirborneState::VectorBounce(SDL_FPoint velocity, SDL_FPoint nor
     SDL_FPoint w = VectorSubtract(velocity, u);
 
     return VectorSubtract(VectorMultiply(w, friction), VectorMultiply(u, 1));
+}
+
+
+// --- Limp State --- //
+
+void PlayerLimpState::StateEnter(PlayerObject* player)
+{
+    PlayerState::StateEnter(player);
+
+    m_Player->HandlePhysics = true;
 }

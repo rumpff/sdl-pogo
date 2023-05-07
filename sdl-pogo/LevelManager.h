@@ -22,7 +22,10 @@ public:
 	virtual void Render(SDL_Renderer* renderer);
 
 	void LoadData(LevelData data);
-	void SpawnObjects(LevelData data);
+	virtual void SpawnObjects(LevelData data);
+
+	LevelData GetLevelData() { m_LevelData; }
+	ObjectManager* GetObjectManager() { return m_ObjectManager; }
 
 protected:
 	LevelData m_LevelData;

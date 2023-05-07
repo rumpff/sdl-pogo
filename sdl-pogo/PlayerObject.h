@@ -14,6 +14,9 @@ public:
 
     float JumpCharge = 0;
 
+    bool Finished = false;
+    bool Dead = false;
+
     virtual void OnCreate();
     virtual void Tick(double deltaTime);
     virtual void Render(SDL_Renderer* renderer);

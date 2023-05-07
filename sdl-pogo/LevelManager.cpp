@@ -15,7 +15,6 @@ void LevelManager::Close()
 
 void LevelManager::ReLoad()
 {
-	printf("reeeeloading!");
 	m_ObjectManager->DestroyAll();
 	SpawnObjects(m_LevelData);
 }

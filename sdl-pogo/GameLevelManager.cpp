@@ -4,7 +4,14 @@ void GameLevelManager::Initialize()
 {
 	LevelManager::Initialize();
 
-	m_GameplayManager = new GameplayManager();
+	m_GameplayManager = new GameplayManager();	
+	ChangeState(new PreGameState());
+}
+
+void GameLevelManager::ReLoad()
+{
+	LevelManager::ReLoad();
+	ChangeState(new PreGameState());
 }
 
 void GameLevelManager::Close()
@@ -16,8 +23,7 @@ void GameLevelManager::Close()
 
 void GameLevelManager::Tick(double deltaTime)
 {
-	m_ObjectManager->GameTick(deltaTime);
-	m_ObjectManager->PhysicsTick(Gravity, deltaTime);
+	m_CurrentState->StateTick(deltaTime);
 
 	const Uint8* currentKeyStates = SDL_GetKeyboardState(NULL);
 
@@ -25,4 +31,30 @@ void GameLevelManager::Tick(double deltaTime)
 	{
 		ReLoad();
 	}
+}
+
+void GameLevelManager::SpawnObjects(LevelData data)
+{
+	LevelManager::SpawnObjects(data);
+
+	std::vector<GameObject*> objects = m_ObjectManager->GetObjects();
+	for (size_t i = 0; i < objects.size(); i++)
+	{
+		if (objects[i]->Type == Player)
+		{
+			m_Player = (PlayerObject*)objects[i];
+		}
+	}
+}
+
+void GameLevelManager::ChangeState(GameLevelState* newState)
+{
+	if (m_CurrentState != 0)
+	{
+		m_CurrentState->StateExit();
+		delete m_CurrentState;
+	}
+
+	m_CurrentState = newState;
+	m_CurrentState->StateEnter(this);
 }

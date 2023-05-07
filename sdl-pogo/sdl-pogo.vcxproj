@@ -138,6 +138,7 @@
     <ClCompile Include="Camera.cpp" />
     <ClCompile Include="FinishObject.cpp" />
     <ClCompile Include="GameLevelManager.cpp" />
+    <ClCompile Include="GameLevelStates.cpp" />
     <ClCompile Include="GameManager.cpp" />
     <ClCompile Include="GameObject.cpp" />
     <ClCompile Include="GameplayManager.cpp" />
@@ -156,6 +157,7 @@
     <ClInclude Include="Collision.h" />
     <ClInclude Include="FinishObject.h" />
     <ClInclude Include="GameLevelManager.h" />
+    <ClInclude Include="GameLevelStates.h" />
     <ClInclude Include="GameManager.h" />
     <ClInclude Include="GameObject.h" />
     <ClInclude Include="GameplayManager.h" />

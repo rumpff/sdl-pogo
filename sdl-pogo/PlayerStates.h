@@ -77,3 +77,9 @@ private:
     SDL_FPoint CollisionNormal(Collision c);
     SDL_FPoint VectorBounce(SDL_FPoint velocity, SDL_FPoint normal, float friction);
 };
+
+class PlayerLimpState : public PlayerState
+{
+public:
+    virtual void StateEnter(PlayerObject* player);
+};

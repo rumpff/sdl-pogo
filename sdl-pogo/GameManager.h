@@ -26,6 +26,10 @@ public:
 	LevelManager* ChangeLevel(LevelManager* newLevel, LevelData data);
 	void Game();
 
+	LevelManager* GetLevel() { return m_CurrentLevel; }
+	AudioManager* GetAudio() { return m_AudioManager; }
+	ResourceLoader* GetResources() { return m_ResourceLoader; }
+
 private:
 	Camera* m_Camera = 0;
 	LevelManager* m_CurrentLevel = 0;
