@@ -1,6 +1,7 @@
 #pragma once
 #include "Manager.h"
 
+#include "LevelData.h"
 #include "ObjectManager.h"
 
 /// <summary>
@@ -10,14 +11,18 @@ class LevelManager :
 	public Manager
 {
 public:
-	SDL_FPoint Gravity{ 0, 1500.0f  };
+	SDL_FPoint Gravity { 0, 1500.0f  };
 
 	virtual void Initialize();
 	virtual void Close();
 	virtual void Tick(double deltaTime);
 	virtual void Render(SDL_Renderer* renderer);
 
+	void LoadData(LevelData data);
+	void SpawnObjects(LevelData data);
+
 protected:
+	LevelData m_LevelData;
 	ObjectManager* m_ObjectManager;
 };
 

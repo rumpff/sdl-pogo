@@ -101,8 +101,8 @@ void PlayerGroundedState::StateTick(double deltaTime)
     // Snap player to anchor
     m_Player->Position = SDL_FPoint
     {
-        m_Anchor.x + (cos(m_Player->Rotation) * (m_Player->ColliderLength * 0.5f)),
-        m_Anchor.y + (sin(m_Player->Rotation) * (m_Player->ColliderLength * 0.5f))
+        m_Anchor.x + (cos(m_Player->Rotation) * (m_Player->GetColliderLength() * 0.5f)),
+        m_Anchor.y + (sin(m_Player->Rotation) * (m_Player->GetColliderLength() * 0.5f))
     };
 }
 

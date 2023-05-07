@@ -5,10 +5,8 @@ void PlayerObject::OnCreate()
 {
     Tag = "player";
     HandlePhysics = true;
-    Position = { 1280.0f / 2.0f, 720.0f / 2.0f };
     Velocity = { 0.0f, -0.0f };
-    ColliderLength = 50.0f;
-    Rotation = -M_PI / 2.0f;
+    m_ColliderLength = 50.0f;
 
     ChangeState(new PlayerAirborneState());
 }
@@ -21,8 +19,8 @@ void PlayerObject::Tick(double deltaTime)
 
 void PlayerObject::Render(SDL_Renderer* renderer)
 {
-    //SDL_FRect fillRect = { Position.x - (ColliderLength /2), Position.y - (ColliderLength / 2), 
-    //    ColliderLength, ColliderLength };
+    //SDL_FRect fillRect = { Position.x - (m_ColliderLength /2), Position.y - (m_ColliderLength / 2), 
+    //    m_ColliderLength, m_ColliderLength };
 
     //SDL_SetRenderDrawColor(renderer, 0xFF, 0x00, 0x00, 0xFF);
     //SDL_RenderFillRectF(renderer, &fillRect);
@@ -31,8 +29,8 @@ void PlayerObject::Render(SDL_Renderer* renderer)
 
     SDL_FPoint handleBarLocation =
     {
-        cosf(Rotation) * (ColliderLength/2 * (1 - m_VisualCharge)) + Position.x,
-        sinf(Rotation) * (ColliderLength/2 * (1 - m_VisualCharge)) + Position.y
+        cosf(Rotation) * (m_ColliderLength/2 * (1 - m_VisualCharge)) + Position.x,
+        sinf(Rotation) * (m_ColliderLength/2 * (1 - m_VisualCharge)) + Position.y
     };
 
     float barSize = 15;

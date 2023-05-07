@@ -41,7 +41,7 @@ std::pair< SDL_FPoint, SDL_FPoint> GameObject::CalcLine(float angle, float lengt
 
 std::pair < SDL_FPoint, SDL_FPoint> GameObject::GetColliderLocal()
 {
-	return CalcLine(Rotation, ColliderLength);
+	return CalcLine(Rotation, m_ColliderLength);
 }
 std::pair < SDL_FPoint, SDL_FPoint> GameObject::GetCollider()
 {
@@ -56,7 +56,7 @@ std::pair < SDL_FPoint, SDL_FPoint> GameObject::GetCollider()
 }
 std::pair < SDL_FPoint, SDL_FPoint> GameObject::GetColliderPrevLocal()
 {
-	return CalcLine(RotationPrev, ColliderLength);
+	return CalcLine(RotationPrev, m_ColliderLength);
 }
 std::pair < SDL_FPoint, SDL_FPoint> GameObject::GetColliderPrev()
 {

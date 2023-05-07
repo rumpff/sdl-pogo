@@ -33,8 +33,37 @@ void GameManager::Initialize()
 
 	m_ResourceLoader = new ResourceLoader();
 
+	// Dummy data
+	LevelData dummyData;
+
+	LevelObject dummyPlayer;
+
+	dummyPlayer.Type = Player;
+	dummyPlayer.InitialPosition = { 1280.0f / 2.0f, 720.0f / 2.0f };
+	dummyPlayer.InitialRotation = -M_PI / 2.0f;
+
+	dummyData.Objects.push_back(dummyPlayer);
+
+	float wallSize = 300;
+	for (int i = 0; i < 4; i++)
+	{
+		LevelObject dummyWall;
+		dummyWall.Type = GeometryNormal;
+
+		dummyWall.ColliderLength = wallSize;
+
+		dummyWall.InitialRotation = i * ((M_PI * 2) / 4);//+ (M_PI / 8);
+		dummyWall.InitialPosition =
+		{
+			(1280 / 2) - cosf(dummyWall.InitialRotation - (M_PI / 2)) * (wallSize / 2),
+			(720 / 2) - sinf(dummyWall.InitialRotation - (M_PI / 2)) * (wallSize / 2)
+		};
+
+		dummyData.Objects.push_back(dummyWall);
+	}
+
 	// Load first level
-	ChangeLevel(new GameLevelManager());
+	ChangeLevel(new GameLevelManager(), dummyData);
 
 	Manager::Initialize();
 }
@@ -53,7 +82,7 @@ void GameManager::Close()
 	SDL_Quit();
 }
 
-void GameManager::ChangeLevel(LevelManager* newLevel)
+LevelManager* GameManager::ChangeLevel(LevelManager* newLevel)
 {
 	// Current level should only be null when the game starts
 	if (m_CurrentLevel != 0)
@@ -64,6 +93,14 @@ void GameManager::ChangeLevel(LevelManager* newLevel)
 
 	m_CurrentLevel = newLevel;
 	m_CurrentLevel->Initialize();
+
+	return m_CurrentLevel;
+}
+
+LevelManager* GameManager::ChangeLevel(LevelManager* newLevel, LevelData data)
+{
+	ChangeLevel(newLevel)->LoadData(data);
+	return m_CurrentLevel;
 }
 
 void GameManager::Game()

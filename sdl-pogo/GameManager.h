@@ -22,7 +22,8 @@ class GameManager :
 public:
 	virtual void Initialize();
 	virtual void Close();
-	void ChangeLevel(LevelManager* newLevel);
+	LevelManager* ChangeLevel(LevelManager* newLevel);
+	LevelManager* ChangeLevel(LevelManager* newLevel, LevelData data);
 	void Game();
 
 private:

@@ -26,8 +26,6 @@ public:
 
 	SDL_FPoint Position, PositionPrev;
 	float Rotation, RotationPrev;
-	float ColliderLength;
-
 	SDL_FPoint Velocity;
 	float AngularVelocity;
 	
@@ -36,6 +34,9 @@ public:
 	virtual void Tick(double deltaTime);
 	virtual void UpdatePrev();
 	virtual void Render(SDL_Renderer* renderer);
+
+	virtual void SetColliderLength(float newLength) { m_ColliderLength = newLength; }
+	float GetColliderLength() { return m_ColliderLength; }
 
 	virtual void OnCollisionEnter(Collision c);
 	virtual void OnCollision(Collision c);
@@ -62,7 +63,9 @@ public:
 	/// <returns></returns>
 	std::pair < SDL_FPoint, SDL_FPoint> GetColliderPrev();
 
-private:
+protected:
+	float m_ColliderLength;
+
 	std::pair< SDL_FPoint, SDL_FPoint> CalcLine(float angle, float length);
 };
 

@@ -4,7 +4,7 @@
 #include "Collision.h"
 
 #include <cmath>
-#include <sstream>https://discord.com/channels/@me/941736042308980747
+#include <sstream>
 
 class PlayerObject :
     public GameObject
@@ -17,6 +17,8 @@ public:
     virtual void OnCreate();
     virtual void Tick(double deltaTime);
     virtual void Render(SDL_Renderer* renderer);
+
+    virtual void SetColliderLength(float newLength) { /* prefent collider changes */ }
 
     void ChangeState(PlayerState* newState);
     void SetVisualCharge(float charge) { m_VisualCharge = charge; }

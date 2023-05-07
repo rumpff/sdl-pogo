@@ -28,6 +28,7 @@ public:
 	void RenderObjects(SDL_Renderer* renderer);
 
 	GameObject* CreateObject(GameObject* newObject);
+	void DestroyAll();
 
 private:
 	std::vector<GameObject*> m_GameObjects;

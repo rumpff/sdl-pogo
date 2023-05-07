@@ -2,31 +2,12 @@
 
 void ObjectManager::Initialize()
 {
-	CreateObject(new PlayerObject());
-
-	float wallSize = 300;
-	for (int i = 0; i < 4; i++)
-	{
-		GameObject* wall = CreateObject(new GeometryObject());
-		wall->ColliderLength = wallSize;
-
-		wall->Rotation = i * ((M_PI * 2) / 4);//+ (M_PI / 8);
-		wall->Position =
-		{
-			(1280 / 2) - cosf(wall->Rotation - (M_PI/2)) * (wallSize / 2),
-			(720 / 2) - sinf(wall->Rotation - (M_PI/2)) * (wallSize / 2)
-		};
-	}
-	
+		
 }
 
 void ObjectManager::Close()
 {
-	for (size_t i = 0; i < m_GameObjects.size(); i++)
-	{
-		m_GameObjects[i]->OnDestroy();
-		delete m_GameObjects[i];
-	}
+	DestroyAll();
 }
 
 GameObject* ObjectManager::CreateObject(GameObject* newObject)
@@ -35,6 +16,17 @@ GameObject* ObjectManager::CreateObject(GameObject* newObject)
 	newObject->OnCreate();
 
 	return newObject;
+}
+
+void ObjectManager::DestroyAll()
+{
+	for (size_t i = 0; i < m_GameObjects.size(); i++)
+	{
+		m_GameObjects[i]->OnDestroy();
+		delete m_GameObjects[i];
+	}
+
+	m_GameObjects.clear();
 }
 
 void ObjectManager::GameTick(double deltaTime)

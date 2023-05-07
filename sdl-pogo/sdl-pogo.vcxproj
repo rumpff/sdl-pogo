@@ -159,6 +159,7 @@
     <ClInclude Include="GameplayManager.h" />
     <ClInclude Include="GeometryObject.h" />
     <ClInclude Include="LevelManager.h" />
+    <ClInclude Include="LevelData.h" />
     <ClInclude Include="Manager.h" />
     <ClInclude Include="ObjectManager.h" />
     <ClInclude Include="PlayerObject.h" />
