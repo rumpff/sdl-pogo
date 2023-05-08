@@ -33,9 +33,11 @@ void GameManager::Initialize()
 
 	m_ResourceLoader = new ResourceLoader();
 
+	m_ResourceLoader->LoadLevels();
+
 	// Dummy data
 	LevelData dummyData;
-
+	/*
 	LevelObject dummyPlayer;
 
 	dummyPlayer.Type = Player;
@@ -80,6 +82,8 @@ void GameManager::Initialize()
 
 		dummyData.Objects.push_back(dummyWall);
 	}
+	*/
+	dummyData = m_ResourceLoader->ParseLevel("leveltest.txt");
 
 	// Load first level
 	ChangeLevel(new GameLevelManager(), dummyData);
