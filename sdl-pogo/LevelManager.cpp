@@ -1,16 +1,17 @@
 #include "LevelManager.h"
 
-void LevelManager::Initialize()
+void LevelManager::Initialize(Resources* resources)
 {
 	m_ObjectManager = new ObjectManager();
-	m_ObjectManager->Initialize();
+	m_ObjectManager->Initialize(resources);
 
-	Manager::Initialize();
+	Manager::Initialize(resources);
 }
 
 void LevelManager::Close()
 {
-	// de mazzel
+	delete m_ObjectManager;
+	m_ObjectManager = 0;
 }
 
 void LevelManager::ReLoad()

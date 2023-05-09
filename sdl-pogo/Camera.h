@@ -4,6 +4,7 @@
 #include <SDL.h>
 
 #include "LevelManager.h"
+#include "UI.h"
 
 /// <summary>
 /// Handles SDL window and rendering
@@ -11,12 +12,12 @@
 class Camera
 {
 public:
-	const int SCREEN_WIDTH = 1280;
-	const int SCREEN_HEIGHT = 720;
+	static const int SCREEN_WIDTH = 1280;
+	static const int SCREEN_HEIGHT = 720;
 
 	void Initialize();
 	void Close();
-	void Render(LevelManager* currentLevel);
+	void Render(LevelManager* currentLevel, UI* ui);
 
 	SDL_Window* GetWindow() {
 		return m_Window;

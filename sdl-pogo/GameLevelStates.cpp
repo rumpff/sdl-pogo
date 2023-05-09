@@ -1,21 +1,22 @@
 #include "GameLevelStates.h"
 #include "GameLevelManager.h"
 
+void PreGameState::StateEnter(GameLevelManager* m)
+{
+    GameLevelState::StateEnter(m);
 
+    m_Level->GetUI()->ChangeState(new PreGameUI());
+}
 
 void PreGameState::StateTick(double deltaTime)
 {
-    const Uint8* currentKeyStates = SDL_GetKeyboardState(NULL);
+    m_WarmupTimer += deltaTime;
 
-    for (size_t i = 0; i < (size_t)SDL_NUM_SCANCODES; i++)
+    if (m_WarmupTimer > m_WarmupLength)
     {
-        if (currentKeyStates[(SDL_Scancode)i])
-        {
-            m_Level->ChangeState(new GameState);
-            break;
-        }
+        m_Level->ChangeState(new GameState);
+        return;
     }
-
 }
 
 void GameState::StateEnter(GameLevelManager* m)
@@ -23,12 +24,14 @@ void GameState::StateEnter(GameLevelManager* m)
     GameLevelState::StateEnter(m);
 
     m_Level->TimeScale = 1;
-    m_Level->LevelTime = 0;
+    m_Level->Stats.LevelTime = 0;
+
+    m_Level->GetUI()->ChangeState(new MidGameUI());
 }
 
 void GameState::StateTick(double deltaTime)
 {
-    m_Level->LevelTime += deltaTime;
+    m_Level->Stats.LevelTime += deltaTime;
 
 	m_Level->GetObjectManager()->GameTick(deltaTime * m_Level->TimeScale);
 	m_Level->GetObjectManager()->PhysicsTick(m_Level->Gravity, deltaTime * m_Level->TimeScale);
@@ -53,12 +56,11 @@ void EndGameState::StateEnter(GameLevelManager* m)
 {
     GameLevelState::StateEnter(m);
 
-    printf("time: ");
-    printf(std::to_string(m_Level->LevelTime).c_str());
-
     m->GetPlayer()->ChangeState(new PlayerLimpState());
 
     m_Level->TimeScale = 1;
+
+    m_Level->GetUI()->ChangeState(new CompleteGameUI());
 }
 
 void EndGameState::StateTick(double deltaTime)
@@ -73,6 +75,11 @@ void EndGameState::StateTick(double deltaTime)
     }
 }
 
+void EndGameState::StateExit()
+{
+    if (m_Level->Stats.FastestTime > m_Level->Stats.LevelTime)
+        m_Level->Stats.FastestTime = m_Level->Stats.LevelTime;
+}
 
 
 void GameOverState::StateEnter(GameLevelManager* m)
@@ -81,19 +88,20 @@ void GameOverState::StateEnter(GameLevelManager* m)
 
     m->GetPlayer()->ChangeState(new PlayerLimpState());
     m_Level->TimeScale = 1;
+
+    m_Level->GetUI()->ChangeState(new FailedGameUI());
 }
 
 void GameOverState::StateTick(double deltaTime)
 {
+    m_ResetTimer += deltaTime;
+    m_Level->TimeScale = Easing::EaseOutExpo(m_ResetTimer, 1, -0.95f, m_ResetLength);
+
     m_Level->GetObjectManager()->GameTick(deltaTime * m_Level->TimeScale);
     m_Level->GetObjectManager()->PhysicsTick(m_Level->Gravity, deltaTime * m_Level->TimeScale);
-
-    if (m_Level->TimeScale > 0.05)
-    {
-        m_Level->TimeScale *= (1 - deltaTime * 2);
-        SDL_clamp(m_Level->TimeScale, 0.05, 1);
-    }
-    else
+    
+    
+    if(m_ResetTimer > m_ResetLength)
     {
         m_Level->ReLoad();
     }

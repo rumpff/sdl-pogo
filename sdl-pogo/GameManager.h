@@ -10,7 +10,7 @@
 #include "Camera.h"
 #include "GameLevelManager.h"
 #include "AudioManager.h"
-#include "ResourceLoader.h"
+#include "Resources.h"
 
 /// <summary>
 /// handle window, control all managers, keep track of current level
@@ -28,11 +28,9 @@ public:
 
 	LevelManager* GetLevel() { return m_CurrentLevel; }
 	AudioManager* GetAudio() { return m_AudioManager; }
-	ResourceLoader* GetResources() { return m_ResourceLoader; }
 
 private:
 	Camera* m_Camera = 0;
 	LevelManager* m_CurrentLevel = 0;
 	AudioManager* m_AudioManager = 0;
-	ResourceLoader* m_ResourceLoader = 0;
 };

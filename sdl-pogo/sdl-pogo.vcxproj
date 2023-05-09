@@ -142,6 +142,8 @@
     <ClCompile Include="GameManager.cpp" />
     <ClCompile Include="GameObject.cpp" />
     <ClCompile Include="GameplayManager.cpp" />
+    <ClCompile Include="GameUI.cpp" />
+    <ClCompile Include="GameUIStates.cpp" />
     <ClCompile Include="GeometryObject.cpp" />
     <ClCompile Include="HazardGeometryObject.cpp" />
     <ClCompile Include="LevelManager.cpp" />
@@ -150,7 +152,9 @@
     <ClCompile Include="ObjectManager.cpp" />
     <ClCompile Include="PlayerObject.cpp" />
     <ClCompile Include="PlayerStates.cpp" />
-    <ClCompile Include="ResourceLoader.cpp" />
+    <ClCompile Include="Resources.cpp" />
+    <ClCompile Include="Label.cpp" />
+    <ClCompile Include="UI.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AudioManager.h" />
@@ -162,6 +166,9 @@
     <ClInclude Include="GameManager.h" />
     <ClInclude Include="GameObject.h" />
     <ClInclude Include="GameplayManager.h" />
+    <ClInclude Include="GameStats.h" />
+    <ClInclude Include="GameUI.h" />
+    <ClInclude Include="GameUIStates.h" />
     <ClInclude Include="GeometryObject.h" />
     <ClInclude Include="HazardGeometryObject.h" />
     <ClInclude Include="LevelManager.h" />
@@ -170,7 +177,10 @@
     <ClInclude Include="ObjectManager.h" />
     <ClInclude Include="PlayerObject.h" />
     <ClInclude Include="PlayerStates.h" />
-    <ClInclude Include="ResourceLoader.h" />
+    <ClInclude Include="Resources.h" />
+    <ClInclude Include="Label.h" />
+    <ClInclude Include="SimpleEasing.h" />
+    <ClInclude Include="UI.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

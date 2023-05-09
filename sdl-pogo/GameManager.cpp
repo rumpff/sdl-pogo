@@ -31,64 +31,14 @@ void GameManager::Initialize()
 		m_AudioManager->Initialize();
 	}
 
-	m_ResourceLoader = new ResourceLoader();
-
-	m_ResourceLoader->LoadLevels();
-
-	// Dummy data
-	LevelData dummyData;
-	/*
-	LevelObject dummyPlayer;
-
-	dummyPlayer.Type = Player;
-	dummyPlayer.InitialPosition = { 1280.0f / 2.0f, 720.0f / 2.0f };
-	dummyPlayer.InitialRotation = -M_PI / 2.0f;
-
-	dummyData.Objects.push_back(dummyPlayer);
-
-	float wallSize = 300;
-	for (int i = 0; i < 4; i++)
-	{
-		LevelObject dummyWall;
-		dummyWall.Type = GeometryNormal;
-		if (i == 3)
-		{
-			dummyWall.ColliderLength = wallSize;
-
-			dummyWall.InitialRotation = i * ((M_PI * 2) / 4) + (M_PI / 8);
-			dummyWall.InitialPosition =
-			{
-				(1280 / 2) - cosf(dummyWall.InitialRotation - (M_PI / 2)) * (wallSize / 1.5f),
-				(720 / 2) - sinf(dummyWall.InitialRotation - (M_PI / 2)) * (wallSize / 1.5f)
-			};
-
-			dummyData.Objects.push_back(dummyWall);
-
-			dummyWall.Type = LevelFinish;
-		}
-
-		if (i == 1)
-			dummyWall.Type = GeometryHazard;
-			
-
-		dummyWall.ColliderLength = wallSize;
-
-		dummyWall.InitialRotation = i * ((M_PI * 2) / 4) + (M_PI / 8);
-		dummyWall.InitialPosition =
-		{
-			(1280 / 2) - cosf(dummyWall.InitialRotation - (M_PI / 2)) * (wallSize / 2),
-			(720 / 2) - sinf(dummyWall.InitialRotation - (M_PI / 2)) * (wallSize / 2)
-		};
-
-		dummyData.Objects.push_back(dummyWall);
-	}
-	*/
-	dummyData = m_ResourceLoader->ParseLevel("leveltest.txt");
+	Resources* resources = new Resources();
+	resources->LoadFonts();
+	resources->LoadLevels();
 
 	// Load first level
-	ChangeLevel(new GameLevelManager(), dummyData);
+	ChangeLevel(new GameLevelManager(), resources->GetLevel(0));
 
-	Manager::Initialize();
+	Manager::Initialize(resources);
 }
 
 void GameManager::Close()
@@ -96,7 +46,7 @@ void GameManager::Close()
 	// Close managers
 	m_CurrentLevel->Close(); delete m_CurrentLevel;
 	m_AudioManager->Close(); delete m_AudioManager;
-	m_ResourceLoader->UnloadEverything(); delete m_ResourceLoader;
+	m_Resources->UnloadEverything(); delete m_Resources;
 	m_Camera->Close(); delete m_Camera;
 
 	//Quit SDL subsystems
@@ -115,7 +65,7 @@ LevelManager* GameManager::ChangeLevel(LevelManager* newLevel)
 	}
 
 	m_CurrentLevel = newLevel;
-	m_CurrentLevel->Initialize();
+	m_CurrentLevel->Initialize(m_Resources);
 
 	return m_CurrentLevel;
 }
@@ -167,6 +117,6 @@ void GameManager::Game()
 		}
 
 		m_CurrentLevel->Tick(deltaTime);
-		m_Camera->Render(m_CurrentLevel);
+		m_Camera->Render(m_CurrentLevel, m_CurrentLevel->GetUI());
 	}
 }

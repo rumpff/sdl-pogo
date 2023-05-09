@@ -20,6 +20,7 @@ void Camera::Initialize()
 
 	// Init render color
 	SDL_SetRenderDrawColor(m_Renderer, 0xFF, 0xFF, 0xFF, 0xFF);
+	SDL_SetRenderDrawBlendMode(m_Renderer, SDL_BLENDMODE_BLEND);
 
 	// Get window surface
 	m_ScreenSurface = SDL_GetWindowSurface(m_Window);
@@ -34,14 +35,19 @@ void Camera::Close()
 	m_Window = NULL;
 }
 
-void Camera::Render(LevelManager* currentLevel)
+void Camera::Render(LevelManager* currentLevel, UI* ui)
 {
 	// Clear screen
-	SDL_SetRenderDrawColor(m_Renderer, 0x00, 0x00, 0x00, 0xFF);
+	
+	SDL_SetRenderDrawColor(m_Renderer, 0x0C, 0x13, 0x4F, 0xFF);
 	SDL_RenderClear(m_Renderer);
 
 	// Render stuff here
-	currentLevel->Render(m_Renderer);
+	if(currentLevel != 0)
+		currentLevel->Render(m_Renderer);
+
+	if (ui != 0)
+		ui->Render(m_Renderer);
 
 	SDL_RenderPresent(m_Renderer);
 }

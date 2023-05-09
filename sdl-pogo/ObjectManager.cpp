@@ -1,8 +1,8 @@
 #include "ObjectManager.h"
 
-void ObjectManager::Initialize()
+void ObjectManager::Initialize(Resources* resources)
 {
-		
+	Manager::Initialize(resources);
 }
 
 void ObjectManager::Close()

@@ -6,27 +6,27 @@
 static class Easing
 {
 public:
-    static float easeInBack(float time, float start, float change, float duration)
+    static float EaseInBack(float time, float start, float change, float duration)
     {
         float s = 1.70158f; // feel free to modify this value
 
         time /= duration;
         return change * (time)*time * ((s + 1) * time - s) + start;
     }
-    static float easeInBounce(float time, float start, float change, float duration)
+    static float EaseInBounce(float time, float start, float change, float duration)
     {
-        return change - easeOutBounce(duration - time, 0, change, duration) + start;
+        return change - EaseOutBounce(duration - time, 0, change, duration) + start;
     }
-    static float easeInCirc(float time, float start, float change, float duration)
+    static float EaseInCirc(float time, float start, float change, float duration)
     {
         time /= duration;
         return change * (1 - sqrtf(1 - time * time)) + start;
     }
-    static float easeInCubic(float time, float start, float change, float duration)
+    static float EaseInCubic(float time, float start, float change, float duration)
     {
         return change * powf(time / duration, 3) + start;
     }
-    static float easeInElastic(float time, float start, float change, float duration)
+    static float EaseInElastic(float time, float start, float change, float duration)
     {
         float s = 1.70158f;
         float p = 0;
@@ -62,28 +62,28 @@ public:
         return -(a * powf(2, 10 * (--time)) * sinf((time * duration - s) * (2 * M_PI) / p)) + start;
 
     }
-    static float easeInExpo(float time, float start, float change, float duration)
+    static float EaseInExpo(float time, float start, float change, float duration)
     {
         return change * powf(2, 10 * (time / duration - 1)) + start;
     }
-    static float easeInQuad(float time, float start, float change, float duration)
+    static float EaseInQuad(float time, float start, float change, float duration)
     {
         time /= duration;
         return change * time * time + start;
     }
-    static float easeInQuart(float time, float start, float change, float duration)
+    static float EaseInQuart(float time, float start, float change, float duration)
     {
         return change * powf(time / duration, 4) + start;
     }
-    static float easeInQuint(float time, float start, float change, float duration)
+    static float EaseInQuint(float time, float start, float change, float duration)
     {
         return change * powf(time / duration, 5) + start;
     }
-    static float easeInSine(float time, float start, float change, float duration)
+    static float EaseInSine(float time, float start, float change, float duration)
     {
         return change * (1 - cosf(time / duration * (M_PI / 2))) + start;
     }
-    static float easeInOutBack(float time, float start, float change, float duration)
+    static float EaseInOutBack(float time, float start, float change, float duration)
     {
         float s = 1.70158f;
 
@@ -100,16 +100,16 @@ public:
         s *= 1.525f;
         return change * 0.5f * ((time)*time * ((s + 1) * time + s) + 2) + start;
     }
-    static float easeInOutBounce(float time, float start, float change, float duration)
+    static float EaseInOutBounce(float time, float start, float change, float duration)
     {
         if (time < duration * 0.5f)
         {
-            return (easeInBounce(time * 2, 0, change, duration) * 0.5f + start);
+            return (EaseInBounce(time * 2, 0, change, duration) * 0.5f + start);
         }
 
-        return (easeOutBounce(time * 2 - duration, 0, change, duration) * 0.5f + change * 0.5f + start);
+        return (EaseOutBounce(time * 2 - duration, 0, change, duration) * 0.5f + change * 0.5f + start);
     }
-    static float easeInOutCirc(float time, float start, float change, float duration)
+    static float EaseInOutCirc(float time, float start, float change, float duration)
     {
         time /= duration * 0.5f;
 
@@ -121,7 +121,7 @@ public:
         time -= 2;
         return change * 0.5f * (sqrtf(1 - time * time) + 1) + start;
     }
-    static float easeInOutCubic(float time, float start, float change, float duration)
+    static float EaseInOutCubic(float time, float start, float change, float duration)
     {
         time /= duration * 0.5f;
 
@@ -132,7 +132,7 @@ public:
 
         return (change * 0.5f) * (powf(time - 2, 3) + 2) + start;
     }
-    static float easeInOutElastic(float time, float start, float change, float duration)
+    static float EaseInOutElastic(float time, float start, float change, float duration)
     {
         float s = 1.70158f;
         float p = 0;
@@ -165,7 +165,7 @@ public:
         }
         return a * powf(2, -10 * (--time)) * sinf((time * duration - s) * (2 * M_PI) / p) * 0.5f + change + start;
     }
-    static float easeInOutExpo(float time, float start, float change, float duration)
+    static float EaseInOutExpo(float time, float start, float change, float duration)
     {
         time /= duration * 0.5f;
 
@@ -178,7 +178,7 @@ public:
         return change * 0.5f * (-powf(2, -10 * time) + 2) + start;
 
     }
-    static float easeInOutQuad(float time, float start, float change, float duration)
+    static float EaseInOutQuad(float time, float start, float change, float duration)
     {
         time /= (duration * 0.5f);
 
@@ -189,7 +189,7 @@ public:
 
         return (-change * 0.5f) * (--time * (time - 2) - 1) + start;
     }
-    static float easeInOutQuart(float time, float start, float change, float duration)
+    static float EaseInOutQuart(float time, float start, float change, float duration)
     {
         time /= duration * 0.5f;
 
@@ -201,7 +201,7 @@ public:
         return -change * 0.5f * (powf(time - 2, 4) - 2) + start;
 
     }
-    static float easeInOutQuint(float time, float start, float change, float duration)
+    static float EaseInOutQuint(float time, float start, float change, float duration)
     {
         time /= duration * 0.5f;
 
@@ -213,15 +213,15 @@ public:
         return change * 0.5f * (powf(time - 2, 5) + 2) + start;
 
     }
-    static float easeInOutSine(float time, float start, float change, float duration)
+    static float EaseInOutSine(float time, float start, float change, float duration)
     {
         return change * 0.5f * (1 - cosf(M_PI * time / duration)) + start;
     }
-    static float easeLiniear(float time, float start, float change, float duration)
+    static float EaseLiniear(float time, float start, float change, float duration)
     {
         return change * time / duration + start;
     }
-    static float easeOutBack(float time, float start, float change, float duration)
+    static float EaseOutBack(float time, float start, float change, float duration)
     {
         float s = 1.70158f;
 
@@ -229,7 +229,7 @@ public:
         return change * ((time)*time * ((s + 1) * time + s) + 1) + start;
 
     }
-    static float easeOutBounce(float time, float start, float change, float duration)
+    static float EaseOutBounce(float time, float start, float change, float duration)
     {
         time /= duration;
 
@@ -256,16 +256,16 @@ public:
                 }
 
     }
-    static float easeOutCirc(float time, float start, float change, float duration)
+    static float EaseOutCirc(float time, float start, float change, float duration)
     {
         time = time / duration - 1;
         return change * sqrtf(1 - time * time) + start;
     }
-    static float easeOutCubic(float time, float start, float change, float duration)
+    static float EaseOutCubic(float time, float start, float change, float duration)
     {
         return change * (powf(time / duration - 1, 3) + 1) + start;
     }
-    static float easeOutElastic(float time, float start, float change, float duration)
+    static float EaseOutElastic(float time, float start, float change, float duration)
     {
         float s = 1.70158f;
         float p = 0;
@@ -298,24 +298,24 @@ public:
         }
         return change2 * powf(2, -10 * time2) * sinf((time2 * duration2 - s) * (2 * M_PI) / p) + change + start2;
     }
-    static float easeOutExpo(float time, float start, float change, float duration)
+    static float EaseOutExpo(float time, float start, float change, float duration)
     {
         return change * (-powf(2, -10 * time / duration) + 1) + start;
     }
-    static float easeOutQuad(float time, float start, float change, float duration)
+    static float EaseOutQuad(float time, float start, float change, float duration)
     {
         time /= duration;
         return -change * time * (time - 2) + start;
     }
-    static float easeOutQuart(float time, float start, float change, float duration)
+    static float EaseOutQuart(float time, float start, float change, float duration)
     {
         return -change * (powf(time / duration - 1, 4) - 1) + start;
     }
-    static float easeOutQuint(float time, float start, float change, float duration)
+    static float EaseOutQuint(float time, float start, float change, float duration)
     {
         return change * (powf(time / duration - 1, 5) + 1) + start;
     }
-    static float easeOutSine(float time, float start, float change, float duration)
+    static float EaseOutSine(float time, float start, float change, float duration)
     {
         return change * sinf(time / duration * (M_PI / 2)) + start;
     }

@@ -1,10 +1,12 @@
 #include "GameLevelManager.h"
 
-void GameLevelManager::Initialize()
+void GameLevelManager::Initialize(Resources* resources)
 {
-	LevelManager::Initialize();
+	LevelManager::Initialize(resources);
 
-	m_GameplayManager = new GameplayManager();	
+	m_UI = new GameUI();
+	m_UI->Initialize(resources);
+
 	ChangeState(new PreGameState());
 }
 
@@ -16,14 +18,15 @@ void GameLevelManager::ReLoad()
 
 void GameLevelManager::Close()
 {
-	m_ObjectManager->Close(); delete m_ObjectManager;
-	m_GameplayManager->Close(); delete m_GameplayManager;
-	
+	LevelManager::Close();
+
+	delete m_CurrentState;
 }
 
 void GameLevelManager::Tick(double deltaTime)
 {
 	m_CurrentState->StateTick(deltaTime);
+	GetUI()->Tick(Stats, deltaTime);
 
 	const Uint8* currentKeyStates = SDL_GetKeyboardState(NULL);
 

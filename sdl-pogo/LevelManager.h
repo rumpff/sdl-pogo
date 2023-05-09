@@ -5,6 +5,7 @@
 
 #include "LevelData.h"
 #include "ObjectManager.h"
+#include "UI.h"
 
 /// <summary>
 /// handle level loading, unloading, restarting
@@ -15,7 +16,7 @@ class LevelManager :
 public:
 	SDL_FPoint Gravity { 0, 1500.0f  };
 
-	virtual void Initialize();
+	virtual void Initialize(Resources* resources);
 	virtual void Close();
 	virtual void ReLoad();
 	virtual void Tick(double deltaTime);
@@ -26,9 +27,11 @@ public:
 
 	LevelData GetLevelData() { m_LevelData; }
 	ObjectManager* GetObjectManager() { return m_ObjectManager; }
+	UI* GetUI() { return m_UI; }
 
 protected:
 	LevelData m_LevelData;
 	ObjectManager* m_ObjectManager;
+	UI* m_UI;
 };
 

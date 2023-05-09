@@ -24,7 +24,7 @@ class ObjectManager :
 	public Manager
 {
 public:
-	virtual void Initialize();
+	virtual void Initialize(Resources* resources);
 	virtual void Close();
 
 	void GameTick(double deltaTime);

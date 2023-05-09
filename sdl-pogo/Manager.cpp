@@ -1,8 +1,9 @@
 #include "Manager.h"
 
-void Manager::Initialize()
+void Manager::Initialize(Resources* resources)
 {
 	m_IsInitalized = true;
+	m_Resources = resources;
 }
 
 void Manager::Close()
