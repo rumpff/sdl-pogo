@@ -76,6 +76,49 @@ LevelManager* GameManager::ChangeLevel(LevelManager* newLevel, LevelData data)
 	return m_CurrentLevel;
 }
 
+void GameManager::LevelSwitcher()
+{
+	// this is bad
+	const Uint8* currentKeyStates = SDL_GetKeyboardState(NULL);
+
+	if (currentKeyStates[SDL_SCANCODE_1])
+	{
+		ChangeLevel(new GameLevelManager(), m_Resources->GetLevel(0));
+	}
+	else if (currentKeyStates[SDL_SCANCODE_2])
+	{
+		ChangeLevel(new GameLevelManager(), m_Resources->GetLevel(1));
+	}
+	else if (currentKeyStates[SDL_SCANCODE_3])
+	{
+		ChangeLevel(new GameLevelManager(), m_Resources->GetLevel(2));
+	}
+	else if (currentKeyStates[SDL_SCANCODE_4])
+	{
+		ChangeLevel(new GameLevelManager(), m_Resources->GetLevel(3));
+	}
+	else if (currentKeyStates[SDL_SCANCODE_5])
+	{
+		ChangeLevel(new GameLevelManager(), m_Resources->GetLevel(4));
+	}
+	else if (currentKeyStates[SDL_SCANCODE_6])
+	{
+		ChangeLevel(new GameLevelManager(), m_Resources->GetLevel(5));
+	}
+	else if (currentKeyStates[SDL_SCANCODE_7])
+	{
+		ChangeLevel(new GameLevelManager(), m_Resources->GetLevel(6));
+	}
+	else if (currentKeyStates[SDL_SCANCODE_8])
+	{
+		ChangeLevel(new GameLevelManager(), m_Resources->GetLevel(7));
+	}
+	else if (currentKeyStates[SDL_SCANCODE_9])
+	{
+		ChangeLevel(new GameLevelManager(), m_Resources->GetLevel(8));
+	}
+}
+
 void GameManager::Game()
 {
 	//Start up SDL and create window
@@ -115,6 +158,9 @@ void GameManager::Game()
 				quit = true;
 			}
 		}
+		
+		// janky
+		LevelSwitcher();
 
 		m_CurrentLevel->Tick(deltaTime);
 		m_Camera->Render(m_CurrentLevel, m_CurrentLevel->GetUI());

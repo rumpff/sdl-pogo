@@ -33,4 +33,6 @@ private:
 	Camera* m_Camera = 0;
 	LevelManager* m_CurrentLevel = 0;
 	AudioManager* m_AudioManager = 0;
+	
+	void LevelSwitcher();
 };
