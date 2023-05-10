@@ -95,7 +95,7 @@ void GameOverState::StateEnter(GameLevelManager* m)
 void GameOverState::StateTick(double deltaTime)
 {
     m_ResetTimer += deltaTime;
-    m_Level->TimeScale = Easing::EaseOutExpo(m_ResetTimer, 1, -0.95f, m_ResetLength);
+    m_Level->TimeScale = SDL_clamp(Easing::EaseOutExpo(m_ResetTimer, 1, -1, m_ResetLength * 0.75f), 0, 1);
 
     m_Level->GetObjectManager()->GameTick(deltaTime * m_Level->TimeScale);
     m_Level->GetObjectManager()->PhysicsTick(m_Level->Gravity, deltaTime * m_Level->TimeScale);

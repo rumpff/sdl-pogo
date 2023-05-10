@@ -58,6 +58,7 @@ private:
     float m_StateTimer;
     Label* m_TimeLabel;
     Label* m_PBLabel;
+    Label* m_PromptLabel;
 };
 
 class FailedGameUI : public GameUIState

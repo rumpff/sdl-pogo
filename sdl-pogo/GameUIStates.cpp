@@ -77,6 +77,11 @@ void CompleteGameUI::StateEnter(GameUI* m, Resources* r)
 		SDL_Color{ 0xFF, 0xFF, 0xFF },
 		r->GetFont(Default),
 		SDL_FPoint{ Camera::SCREEN_WIDTH / 2, Camera::SCREEN_HEIGHT / 1.778 });
+
+	m_PromptLabel = new Label("press r to try again",
+		SDL_Color{ 0xFF, 0xFF, 0xFF },
+		r->GetFont(Small),
+		SDL_FPoint{ Camera::SCREEN_WIDTH / 2, Camera::SCREEN_HEIGHT * 0.75f });
 }
 
 void CompleteGameUI::StateExit()
@@ -97,6 +102,11 @@ void CompleteGameUI::StateTick(GameStats stats, double deltaTime)
 	{
 		m_PBLabel->SetText("PB: " + m_PBLabel->to_string_with_precision(stats.FastestTime, 3));
 	}
+
+	float promptAlpha = (cosf(m_StateTimer * M_PI) * 0.5f + 0.5f) * 120 + 50;
+	SDL_Color c = { 0xFF, 0xFF, 0xFF };
+	c.a = promptAlpha;
+	m_PromptLabel->SetColor(c);
 }
 
 void CompleteGameUI::StateRender(SDL_Renderer* renderer)
@@ -111,6 +121,9 @@ void CompleteGameUI::StateRender(SDL_Renderer* renderer)
 
 	m_PBLabel->MakeText(renderer);
 	m_PBLabel->Render(renderer);
+
+	m_PromptLabel->MakeText(renderer);
+	m_PromptLabel->Render(renderer);
 
 	// screen flash
 	float flashAlpha = Easing::EaseOutExpo(SDL_clamp(m_StateTimer, 0, 1), 255, -255, 1);
