@@ -47,8 +47,8 @@ public:
     virtual void StateExit();
 
 private:
-    const float MaxSwivelAngle = M_PI / 3;
-    const float SwivelSpeed = 6;
+    const float MaxSwivelAngle = M_PI / 6;
+    const float SwivelSpeed = 3;
     const float FullChargeDuration = 0.35f;
     const float DeChargeDuration = 0.75;
     const float ChargeThreshold = 0.2;
