@@ -26,6 +26,7 @@ class Resources
 public:
 	void UnloadEverything();
 	void LoadLevels();
+	void UnloadLevels();
 	void LoadFonts();
 	void UnLoadFonts();
 	LevelData ParseLevel(std::string file);

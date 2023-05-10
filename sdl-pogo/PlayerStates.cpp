@@ -6,6 +6,50 @@ void PlayerState::StateEnter(PlayerObject* player)
     m_Player = player;
 }
 
+void PlayerState::Bounce(Collision c)
+{
+    m_Player->Velocity = VectorBounce(c.ImpactVelocity, CollisionNormal(c), 0.6f);
+
+    // Bounce rotate
+    float normalAngle = atan2(CollisionNormal(c).y, CollisionNormal(c).x);
+
+    // Rotate normal when landing on head
+    normalAngle -= (c.ColliderAnchor == 1) ? M_PI : 0;
+
+    float angleVelocity = AngleDifference(m_Player->Rotation, normalAngle);
+
+    angleVelocity *= BounceRotate;
+
+    m_Player->AngularVelocity = angleVelocity;
+}
+
+SDL_FPoint PlayerState::CollisionNormal(Collision c)
+{
+    std::pair<SDL_FPoint, SDL_FPoint> colliderNormals{
+    { cosf(c.Object->Rotation - (M_PI * 0.5)), sinf(c.Object->Rotation - (M_PI * 0.5)) },
+    { cosf(c.Object->Rotation + (M_PI * 0.5)), sinf(c.Object->Rotation + (M_PI * 0.5)) },
+    };
+    SDL_FPoint impactReversed{
+        c.ImpactVelocity.x * -1,
+        c.ImpactVelocity.y * -1
+    };
+
+    // check which normal points most towards impact vector
+    float distToFirst = std::hypotf(impactReversed.x - colliderNormals.first.x, impactReversed.y - colliderNormals.first.y);
+    float distToSecond = std::hypotf(impactReversed.x - colliderNormals.second.x, impactReversed.y - colliderNormals.second.y);
+
+    return (distToFirst <= distToSecond) ? colliderNormals.first : colliderNormals.second;
+}
+
+SDL_FPoint PlayerState::VectorBounce(SDL_FPoint velocity, SDL_FPoint normal, float friction)
+{
+    // https://stackoverflow.com/a/573206
+    SDL_FPoint u = VectorMultiply(normal, Dot(velocity, normal) / Dot(normal, normal));
+    SDL_FPoint w = VectorSubtract(velocity, u);
+
+    return VectorSubtract(VectorMultiply(w, friction), VectorMultiply(u, 1));
+}
+
 float PlayerState::Dot(SDL_FPoint a, SDL_FPoint b)
 {
     return a.x * b.x + a.y * b.y;
@@ -217,45 +261,6 @@ void PlayerAirborneState::OnTriggerEnter(Collision c)
 void PlayerAirborneState::Ground(Collision c)
 {
     m_Player->ChangeState(new PlayerGroundedState(CollisionNormal(c)));
-}
-
-void PlayerState::Bounce(Collision c)
-{    
-    m_Player->Velocity = VectorBounce(c.ImpactVelocity, CollisionNormal(c), 0.6f);
-
-    // Bounce rotate
-    float normalAngle = atan2(CollisionNormal(c).y, CollisionNormal(c).x);
-    float angleVelocity = AngleDifference(m_Player->Rotation, normalAngle - M_PI);
-    angleVelocity *= BounceRotate;
-    
-    m_Player->AngularVelocity = angleVelocity;
-}
-
-SDL_FPoint PlayerState::CollisionNormal(Collision c)
-{
-    std::pair<SDL_FPoint, SDL_FPoint> colliderNormals{
-    { cosf(c.Object->Rotation - (M_PI * 0.5)), sinf(c.Object->Rotation - (M_PI * 0.5)) },
-    { cosf(c.Object->Rotation + (M_PI * 0.5)), sinf(c.Object->Rotation + (M_PI * 0.5)) },
-    };
-    SDL_FPoint impactReversed{
-        c.ImpactVelocity.x * -1,
-        c.ImpactVelocity.y * -1
-    };
-
-    // check which normal points most towards impact vector
-    float distToFirst = std::hypotf(impactReversed.x - colliderNormals.first.x, impactReversed.y - colliderNormals.first.y);
-    float distToSecond = std::hypotf(impactReversed.x - colliderNormals.second.x, impactReversed.y - colliderNormals.second.y);
-
-    return (distToFirst <= distToSecond) ? colliderNormals.first : colliderNormals.second;
-}
-
-SDL_FPoint PlayerState::VectorBounce(SDL_FPoint velocity, SDL_FPoint normal, float friction)
-{
-    // https://stackoverflow.com/a/573206
-    SDL_FPoint u = VectorMultiply(normal, Dot(velocity, normal) / Dot(normal, normal));
-    SDL_FPoint w = VectorSubtract(velocity, u);
-
-    return VectorSubtract(VectorMultiply(w, friction), VectorMultiply(u, 1));
 }
 
 

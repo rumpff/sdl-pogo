@@ -18,6 +18,11 @@ void Resources::LoadLevels()
 	m_Levels.push_back(ParseLevel("Resources/Levels/level9.txt"));
 }
 
+void Resources::UnloadLevels()
+{
+	m_Levels.clear();
+}
+
 LevelData Resources::ParseLevel(std::string file)
 {
 	LevelData data;
@@ -34,7 +39,8 @@ LevelData Resources::ParseLevel(std::string file)
 		{
 			while (getline(levelFile, line, '\n'))
 			{
-				rawLevel.push_back(line);
+				if(line != "" && line[0] != '#')
+					rawLevel.push_back(line);
 			}
 
 			levelFile.close();
@@ -74,7 +80,8 @@ LevelData Resources::ParseLevel(std::string file)
 	}
 	catch (const std::exception& e) 
 	{
-		printf("exception parsing level!n");
+		printf("exception parsing level!\n");
+		printf((file + "\n").c_str());
 		printf(e.what());
 	}
 	
