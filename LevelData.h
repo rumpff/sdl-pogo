@@ -11,7 +11,8 @@ enum ObjectType
 	Player,
 	LevelFinish,
 	GeometryNormal,
-	GeometryHazard
+	GeometryHazard,
+	GeometryBoost
 };
 
 

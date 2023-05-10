@@ -263,6 +263,8 @@ void PlayerAirborneState::OnTriggerEnter(Collision c)
     case LevelFinish:
         m_Player->Finished = true;
         break;
+    case GeometryBoost:
+        m_Player->Velocity = { m_Player->Velocity.x * 2, m_Player->Velocity.y * 2 };
     }
 }
 

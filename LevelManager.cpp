@@ -62,6 +62,10 @@ void LevelManager::SpawnObjects(LevelData data)
 			gObject = new HazardGeometryObject();
 			break;
 
+		case GeometryBoost:
+			gObject = new BoostGeometryObject();
+			break;
+
 		default:
 			printf("UNIMPLEMENTED OBJECT TYPE\n");
 			break;

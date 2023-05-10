@@ -19,7 +19,32 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="AudioManager.cpp" />
+    <ClCompile Include="BoostGeometryObject.cpp" />
+    <ClCompile Include="Camera.cpp" />
+    <ClCompile Include="FinishObject.cpp" />
+    <ClCompile Include="GameLevelManager.cpp" />
+    <ClCompile Include="GameLevelStates.cpp" />
+    <ClCompile Include="GameManager.cpp" />
+    <ClCompile Include="GameObject.cpp" />
+    <ClCompile Include="GameplayManager.cpp" />
+    <ClCompile Include="GameUI.cpp" />
+    <ClCompile Include="GameUIStates.cpp" />
+    <ClCompile Include="GeometryObject.cpp" />
+    <ClCompile Include="HazardGeometryObject.cpp" />
+    <ClCompile Include="Label.cpp" />
+    <ClCompile Include="LevelManager.cpp" />
+    <ClCompile Include="Main.cpp" />
+    <ClCompile Include="Manager.cpp" />
+    <ClCompile Include="ObjectManager.cpp" />
+    <ClCompile Include="PlayerObject.cpp" />
+    <ClCompile Include="PlayerStates.cpp" />
+    <ClCompile Include="Resources.cpp" />
+    <ClCompile Include="UI.cpp" />
+  </ItemGroup>
+  <ItemGroup>
     <ClInclude Include="AudioManager.h" />
+    <ClInclude Include="BoostGeometryObject.h" />
     <ClInclude Include="Camera.h" />
     <ClInclude Include="Collision.h" />
     <ClInclude Include="FinishObject.h" />
@@ -43,29 +68,6 @@
     <ClInclude Include="Resources.h" />
     <ClInclude Include="SimpleEasing.h" />
     <ClInclude Include="UI.h" />
-  </ItemGroup>
-  <ItemGroup>
-    <ClCompile Include="AudioManager.cpp" />
-    <ClCompile Include="Camera.cpp" />
-    <ClCompile Include="FinishObject.cpp" />
-    <ClCompile Include="GameLevelManager.cpp" />
-    <ClCompile Include="GameLevelStates.cpp" />
-    <ClCompile Include="GameManager.cpp" />
-    <ClCompile Include="GameObject.cpp" />
-    <ClCompile Include="GameplayManager.cpp" />
-    <ClCompile Include="GameUI.cpp" />
-    <ClCompile Include="GameUIStates.cpp" />
-    <ClCompile Include="GeometryObject.cpp" />
-    <ClCompile Include="HazardGeometryObject.cpp" />
-    <ClCompile Include="Label.cpp" />
-    <ClCompile Include="LevelManager.cpp" />
-    <ClCompile Include="Main.cpp" />
-    <ClCompile Include="Manager.cpp" />
-    <ClCompile Include="ObjectManager.cpp" />
-    <ClCompile Include="PlayerObject.cpp" />
-    <ClCompile Include="PlayerStates.cpp" />
-    <ClCompile Include="Resources.cpp" />
-    <ClCompile Include="UI.cpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{D8FE2186-4BF0-4B89-913F-6C26818E5AC5}</ProjectGuid>
