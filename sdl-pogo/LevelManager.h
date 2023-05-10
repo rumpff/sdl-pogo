@@ -14,7 +14,7 @@ class LevelManager :
 	public Manager
 {
 public:
-	SDL_FPoint Gravity { 0, 1500.0f  };
+	const SDL_FPoint Gravity { 0, 1500.0f  };
 
 	virtual void Initialize(Resources* resources);
 	virtual void Close();

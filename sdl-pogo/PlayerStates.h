@@ -47,7 +47,7 @@ public:
     virtual void StateExit();
 
 private:
-    const float MaxSwivelAngle = M_PI / 6;
+    const float MaxSwivelAngle = M_PI / 4;
     const float SwivelSpeed = 3;
     const float FullChargeDuration = 0.35f;
     const float DeChargeDuration = 0.75;
@@ -60,7 +60,9 @@ private:
     void Charge(float amount);
     void Jump();
 
+
     bool Rotate(float amount);
+    SDL_FPoint JumpVelocity();
 };
 
 class PlayerAirborneState : public PlayerState

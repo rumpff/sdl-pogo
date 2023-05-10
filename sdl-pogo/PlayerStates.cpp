@@ -150,7 +150,7 @@ void PlayerGroundedState::StateTick(double deltaTime)
 
 void PlayerGroundedState::StateExit()
 {
-    m_Player->SetVisualCharge(0);
+    m_Player->SetCharge(0);
 }
 
 bool PlayerGroundedState::Rotate(float amount)
@@ -177,20 +177,28 @@ bool PlayerGroundedState::Rotate(float amount)
 void PlayerGroundedState::Charge(float amount)
 {
     m_Charge = SDL_clamp(m_Charge + amount, 0, 1);
-    m_Player->SetVisualCharge(m_Charge);
+
+    m_Player->SetCharge(m_Charge);
+    m_Player->ShowTrajectory(JumpVelocity());
 }
 
 void PlayerGroundedState::Jump()
 {
+    m_Player->Velocity = JumpVelocity();
+    m_Player->ChangeState(new PlayerAirborneState());
+}
+
+SDL_FPoint PlayerGroundedState::JumpVelocity()
+{
     float jumpHeight = m_Player->JumpHeight * m_Charge;
 
-    m_Player->Velocity =
+    return
     {
         cosf(m_Player->Rotation) * jumpHeight,
         sinf(m_Player->Rotation) * jumpHeight
     };
-    m_Player->ChangeState(new PlayerAirborneState());
 }
+
 
 
 // --- Airborne state --- //
